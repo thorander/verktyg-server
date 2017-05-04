@@ -2,9 +2,6 @@ package entity;
 
 import javax.persistence.*;
 
-/**
- * Created by phili on 2017-05-04.
- */
 @Entity
 @Table
 public class User {
@@ -14,13 +11,12 @@ public class User {
     private String firstName;
     private String lastName;
 
-    public User(int uid, String firstName, String lastName) {
+    public User(String firstName, String lastName) {
         super();
-        this.uid = uid;
         this.firstName = firstName;
-
+        this.lastName = lastName;
     }
-public User(){
+    public User(){
         super();
 }
 
