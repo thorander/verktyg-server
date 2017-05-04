@@ -1,0 +1,7 @@
+DROP DATABASE IF EXISTS testverktyg;
+CREATE DATABASE testverktyg;
+USE testverktyg;
+
+CREATE USER 'verktyg'@'localhost' IDENTIFIED BY '1234';
+GRANT ALL PRIVILEGES ON * . * TO 'verktyg'@'localhost';
+FLUSH PRIVILEGES;
