@@ -3,13 +3,15 @@
     <persistence-unit name="JPAVerktyg" transaction-type="RESOURCE_LOCAL">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <class>entity.Answer</class>
+        <class>entity.Question</class>
+        <class>entity.Test</class>
         <class>entity.User</class>
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/testverktyg?zeroDateTimeBehavior=convertToNull"/>
             <property name="javax.persistence.jdbc.user" value="verktyg"/>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.password" value="1234"/>
-            <property name="javax.persistence.schema-generation.database.action" value="create"/>
+            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
         </properties>
     </persistence-unit>
 </persistence>

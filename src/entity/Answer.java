@@ -11,11 +11,16 @@ public class Answer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String answer;
+    private boolean correct;
 
-    public Answer(int id, String answer) {
+    @OneToOne
+    private Question question;
+
+    public Answer(String answer, boolean correct, Question question) {
         super();
-        this.id = id;
         this.answer = answer;
+        this.correct = correct;
+        this.question = question;
     }
 
     public Answer() {
@@ -41,5 +46,13 @@ public class Answer {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public boolean isCorrect(){
+        return correct;
+    }
+
+    public void setCorrect(boolean correct){
+        this.correct = correct;
     }
 }

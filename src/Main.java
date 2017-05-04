@@ -1,5 +1,7 @@
 import core.Server;
 import entity.Answer;
+import entity.Question;
+import entity.Test;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
@@ -13,14 +15,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         GridPane root = new GridPane();
 
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("JPAVerktyg");
-        EntityManager em = emf.createEntityManager();
 
-        em.getTransaction().begin();
-        Answer yes = new Answer("Ja");
-        em.persist(yes);
-        em.getTransaction().commit();
-        System.out.println("Persistence committed");
 
         Server server = new Server(4436);
         server.run();
@@ -31,6 +26,23 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        launch(args);
+        //launch(args);
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("JPAVerktyg");
+        EntityManager em = emf.createEntityManager();
+
+        em.getTransaction().begin();
+        Test t = new Test("Hur man slår barn utan att det märks");
+
+        Question q1 = new Question("Var ska man slå?", t);
+        Answer a1q1 = new Answer("På armen", true, q1);
+        Answer a2q1 = new Answer("I ansiktet", false, q1);
+        q1.addAnswer(a1q1);
+        q1.addAnswer(a2q1);
+
+        t.addQuestion(q1);
+
+        em.persist(t);
+        em.getTransaction().commit();
+        System.out.println("Persistence committed");
     }
 }
