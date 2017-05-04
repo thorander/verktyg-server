@@ -10,11 +10,17 @@ public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-
     private String answer;
 
+    public Answer(int id, String answer) {
+        super();
+        this.id = id;
+        this.answer = answer;
+    }
+
     public Answer() {
-        answer = "";
+        super();
+        //answer = "";
     }
 
     public Answer(String answer) {

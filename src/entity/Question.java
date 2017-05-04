@@ -13,11 +13,17 @@ public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-
     private String question;
 
+    public Question(int id, String question) {
+        super();
+        this.id = id;
+        this.question = question;
+    }
+
     public Question() {
-        question = "";
+        super();
+        //question = "";
     }
 
     public Question(String question) {
@@ -29,17 +35,14 @@ public class Question {
     }
 
     public void setQuestion(String question) {
-
         this.question = question;
     }
 
     public int getId() {
-
         return id;
     }
 
     public void setId(int id) {
-
         this.id = id;
     }
 
