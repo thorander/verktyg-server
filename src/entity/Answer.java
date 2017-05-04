@@ -1,12 +1,10 @@
 package entity;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table
 public class Answer {
 
     @Id
@@ -15,27 +13,27 @@ public class Answer {
 
     private String answer;
 
-    public Answer(){
+    public Answer() {
         answer = "";
     }
 
-    public Answer(String answer){
+    public Answer(String answer) {
         this.answer = answer;
     }
 
-    public String getAnswer(){
+    public String getAnswer() {
         return answer;
     }
 
-    public void setAnswer(String answer){
+    public void setAnswer(String answer) {
         this.answer = answer;
     }
 
-    public int getId(){
+    public int getId() {
         return id;
     }
 
-    public void setId(int id){
+    public void setId(int id) {
         this.id = id;
     }
 }
