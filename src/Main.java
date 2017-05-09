@@ -2,6 +2,8 @@ import core.Server;
 import entity.Answer;
 import entity.Question;
 import entity.Test;
+import entity.User;
+import entity.useranswers.UTest;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
@@ -31,17 +33,23 @@ public class Main extends Application {
         EntityManager em = emf.createEntityManager();
 
         em.getTransaction().begin();
-        Test t = new Test("Hur man slår barn utan att det märks");
+        Test t = new Test("ESC2017");
 
-        Question q1 = new Question("Var ska man slå?", t);
-        Answer a1q1 = new Answer("På armen", true, q1);
-        Answer a2q1 = new Answer("I ansiktet", false, q1);
+        Question q1 = new Question("Var hålls Eurovision Song Contest i år?", t);
+        Answer a1q1 = new Answer("Kiev", true, q1);
+        Answer a2q1 = new Answer("Stockholm", false, q1);
         q1.addAnswer(a1q1);
         q1.addAnswer(a2q1);
 
+        User markus = new User("Markus", "Gustafsson", User.STUDENT);
+
         t.addQuestion(q1);
+        t.addTestTaker(markus);
+
+        UTest utest = new UTest();
 
         em.persist(t);
+        em.persist(utest);
         em.getTransaction().commit();
         System.out.println("Persistence committed");
     }
