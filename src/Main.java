@@ -15,20 +15,21 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        GridPane root = new GridPane();
 
 
 
         Server server = new Server(4436);
-        server.run();
+        server.start();
 
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
-        primaryStage.show();
     }
 
     public static void main(String[] args) {
-        //launch(args);
+/*        launch(args);*/
+
+        Server server = new Server(4436);
+        server.start();
+
+        System.out.println("Kom vi hit?");
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("JPAVerktyg");
         EntityManager em = emf.createEntityManager();
 

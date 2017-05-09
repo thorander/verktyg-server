@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@NamedQuery(name="User.findByName",
+        query="SELECT c FROM User c WHERE c.username = :username")
 @Table
 public class User {
 
@@ -23,6 +25,8 @@ public class User {
     private String firstName;
     private String lastName;
     private int role;
+    private String username;
+    private String password;
 
     @OneToMany(targetEntity = Test.class, cascade = CascadeType.PERSIST)
     private List testsToTake;
@@ -66,4 +70,16 @@ public class User {
     public void setLastName(String fname) {
         this.lastName = fname;
     }
+
+    public String getUsername() { return username;}
+
+    public void setUsername(String username){this.username = username;}
+
+    public String getPassword() {return password;}
+
+    public void setPassword(String password) {this.password = password;}
+
+    public int getRole() {return role;}
+
+    public void setRole(int role) {this.role = role;}
 }

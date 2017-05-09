@@ -28,15 +28,16 @@ public class Connection extends Thread{
                     socket.getInputStream(), "UTF8"));
             while(true){
                 input = in.readLine();
-                System.out.println(input);
                 if(input.equalsIgnoreCase("end"))
                     break;
+                System.out.println(input);
                 out.println("Echo: " + input);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(socket.getInetAddress() + " disconnected.");
         } finally {
             try {
+                System.out.println(socket.getInetAddress() + " disconnected");
                 socket.close();
                 Server.removeConnection(this);
             } catch (IOException e) {
