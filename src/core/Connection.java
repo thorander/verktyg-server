@@ -1,6 +1,7 @@
 package core;
 
 import entity.User;
+import service.UserService;
 
 import java.io.*;
 import java.net.Socket;
@@ -15,9 +16,12 @@ public class Connection extends Thread{
 
     private String input;
 
+    private UserService us;
+
     public Connection(Socket socket, User user){
         this.socket = socket;
         this.user = user;
+        us = new UserService();
     }
 
     public void run(){
@@ -30,7 +34,7 @@ public class Connection extends Thread{
                 input = in.readLine();
                 if(input.equalsIgnoreCase("end"))
                     break;
-                System.out.println(input);
+                handleInput(input);
                 out.println("Echo: " + input);
             }
         } catch (IOException e) {
@@ -43,6 +47,16 @@ public class Connection extends Thread{
             } catch (IOException e) {
                 System.out.println(e);
             }
+        }
+    }
+
+    private void handleInput(String input){
+        String[] split = input.split("#");
+        switch(split[0]){
+            case "REGISTER":
+                User u = new User(split[1], split[2], split[3], split[4]);
+                us.createUser(u);
+                break;
         }
     }
 

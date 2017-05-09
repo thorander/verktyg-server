@@ -40,6 +40,15 @@ public class User {
         this.lastName = lastName;
         this.role = role;
     }
+
+    public User(String firstName, String lastName, String username, String password){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.role = User.ADMIN;
+    }
+
     public User(){
         super();
         testsToTake = new ArrayList<Test>();
