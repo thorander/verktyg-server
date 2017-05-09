@@ -6,6 +6,7 @@
         <class>entity.Question</class>
         <class>entity.Test</class>
         <class>entity.User</class>
+        <class>entity.useranswers.UTest</class>
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/testverktyg?zeroDateTimeBehavior=convertToNull"/>
             <property name="javax.persistence.jdbc.user" value="verktyg"/>
