@@ -28,7 +28,7 @@ public class Server extends Thread {
         while(true){
             try {
                 Socket socket = server.accept();
-                Connection c = new Connection(socket, new User("Markus", "Gustafsson", User.STUDENT));
+                Connection c = new Connection(socket, new User("Markus", "Gustafsson", "student"));
                 c.start();
                 connections.add(c);
             } catch (IOException e){

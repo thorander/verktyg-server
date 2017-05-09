@@ -42,7 +42,7 @@ public class Main extends Application {
         q1.addAnswer(a1q1);
         q1.addAnswer(a2q1);
 
-        User markus = new User("Markus", "Gustafsson", User.STUDENT);
+        User markus = new User("Markus", "Gustafsson", "admin");
 
         t.addQuestion(q1);
         t.addTestTaker(markus);
