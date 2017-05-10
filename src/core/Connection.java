@@ -2,6 +2,7 @@ package core;
 
 import entity.Answer;
 import entity.Question;
+import entity.Test;
 import entity.User;
 import service.UserService;
 
@@ -58,7 +59,7 @@ public class Connection extends Thread{
     private void handleInput(String input){
         String[] split = input.split("#");
         User u;
-        Question q = new Question();
+        Test t;
         switch(split[0]){
             case "REGISTER":
                 u = new User(split[1], split[2], split[3], split[4], split[5]);//hej
@@ -75,7 +76,9 @@ public class Connection extends Thread{
                 break;
             case "CREATEQUIZ":
                 try {
-                   //Do something
+                    t = new Test(split[1], split[2]);
+                    System.out.println(t);
+
                 } catch(NoResultException e) {
                     out.println("ERROR# Couldn't save the quiz.");
                 }
