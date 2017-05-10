@@ -14,11 +14,12 @@ public class UAnswer {
     private Answer answer;
     private boolean correctAnswer;
 
-    public UAnswer(){
+    public UAnswer() {
+
     }
 
 
-    public UAnswer(Answer answer,boolean correctAnswer){
+    public UAnswer(Answer answer, boolean correctAnswer) {
 
         this.answer = answer;
         this.correctAnswer = correctAnswer;

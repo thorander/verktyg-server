@@ -18,10 +18,11 @@ public class UQuestion {
     @OneToMany(targetEntity = UAnswer.class, cascade = CascadeType.PERSIST)
     private List userAnswers;
 
-    public UQuestion(){
+    public UQuestion() {
 
     }
-    public UQuestion(Question question, int UQuestionId){
+
+    public UQuestion(Question question, int UQuestionId) {
         this.UQuestionId = UQuestionId;
         this.question = question;
         this.userAnswers = new ArrayList();
@@ -40,6 +41,7 @@ public class UQuestion {
     public void setUQuestionId(int UQuestionId) {
         this.UQuestionId = UQuestionId;
     }
+
     public int getUQuestionId() {
         return UQuestionId;
     }
@@ -51,7 +53,6 @@ public class UQuestion {
     public List getUserAnswers() {
         return userAnswers;
     }
-
 
 
 }

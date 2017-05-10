@@ -34,12 +34,12 @@ public class User {
         this.role = role;
     }
 
-    public User(String firstName, String lastName, String username, String password){
+    public User(String firstName, String lastName, String username, String password, String role){
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
-        this.role = "admin";
+        this.role = role;
     }
 
     public User(){
