@@ -15,9 +15,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-
-
-
         Server server = new Server(4436);
         server.start();
 
@@ -29,13 +26,10 @@ public class Main extends Application {
         Server server = new Server(4436);
         server.start();
 
-        System.out.println("Kom vi hit?");
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("JPAVerktyg");
         EntityManager em = emf.createEntityManager();
 
-        em.getTransaction().begin();
         Test t = new Test("ESC2017");
-
 
         Question q1 = new Question("Var hålls Eurovision Song Contest i år?", t);
         Answer a1q1 = new Answer("Kiev", true, q1);
@@ -43,16 +37,19 @@ public class Main extends Application {
         q1.addAnswer(a1q1);
         q1.addAnswer(a2q1);
 
-        User markus = new User("Markus", "Gustafsson", "admin");
+        User markus = new User("Markus", "Gustafsson", "mackan", "1234", "admin");
 
         t.addQuestion(q1);
         t.addTestTaker(markus);
+        t.setCreator(markus);
 
-        UTest utest = new UTest();
+        System.out.println("Everything created up to here.");
 
+        em.getTransaction().begin();
+        System.out.println("Begun transaction");
         em.persist(t);
-        em.persist(utest);
+        System.out.println("Finished persisting");
         em.getTransaction().commit();
-        System.out.println("Persistence committed");
+        System.out.println("Persistence committed. Ready to use.");
     }
 }
