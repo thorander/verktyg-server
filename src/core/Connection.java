@@ -62,7 +62,7 @@ public class Connection extends Thread{
         Test t;
         switch(split[0]){
             case "REGISTER":
-                u = new User(split[1], split[2], split[3], split[4], split[5]);//hej
+                u = new User(split[1], split[2], split[3], split[4], split[5]);
                 us.createUser(u);
                 break;
             case "LOGIN":
