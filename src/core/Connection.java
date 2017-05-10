@@ -1,5 +1,7 @@
 package core;
 
+import entity.Answer;
+import entity.Question;
 import entity.User;
 import service.UserService;
 
@@ -19,6 +21,8 @@ public class Connection extends Thread{
     private String input;
 
     private UserService us;
+
+    private Question question;
 
     public Connection(Socket socket, User user){
         this.socket = socket;
@@ -54,6 +58,7 @@ public class Connection extends Thread{
     private void handleInput(String input){
         String[] split = input.split("#");
         User u;
+        Question q = new Question();
         switch(split[0]){
             case "REGISTER":
                 u = new User(split[1], split[2], split[3], split[4]);
@@ -68,6 +73,12 @@ public class Connection extends Thread{
                     out.println("ERROR#No such user registered. Check your username.");
                 }
                 break;
+            case "CREATEQUIZ":
+                try {
+                   //Do something
+                } catch(NoResultException e) {
+                    out.println("ERROR# Couldn't save the quiz.");
+                }
         }
     }
 

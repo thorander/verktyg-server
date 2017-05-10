@@ -36,6 +36,7 @@ public class Main extends Application {
         em.getTransaction().begin();
         Test t = new Test("ESC2017");
 
+
         Question q1 = new Question("Var hålls Eurovision Song Contest i år?", t);
         Answer a1q1 = new Answer("Kiev", true, q1);
         Answer a2q1 = new Answer("Stockholm", false, q1);
