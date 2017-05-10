@@ -11,20 +11,13 @@ import java.util.List;
         query="SELECT c FROM User c WHERE c.username = :username")
 @Table
 public class User {
-
-    @Transient
-    public static final int ADMIN = 1;
-    @Transient
-    public static final int TEACHER = 2;
-    @Transient
-    public static final int STUDENT = 3;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int uid;
     private String firstName;
     private String lastName;
-    private int role;
+    private String role;
+    @Column(unique = true)
     private String username;
     private String password;
 
@@ -34,7 +27,7 @@ public class User {
     @OneToMany(targetEntity = UTest.class, cascade = CascadeType.PERSIST)
     private List takenTests;
 
-    public User(String firstName, String lastName, int role) {
+    public User(String firstName, String lastName, String role) {
         this();
         this.firstName = firstName;
         this.lastName = lastName;
@@ -46,7 +39,7 @@ public class User {
         this.lastName = lastName;
         this.username = username;
         this.password = password;
-        this.role = User.ADMIN;
+        this.role = "admin";
     }
 
     public User(){
@@ -88,7 +81,7 @@ public class User {
 
     public void setPassword(String password) {this.password = password;}
 
-    public int getRole() {return role;}
+    public String getRole() {return role;}
 
-    public void setRole(int role) {this.role = role;}
+    public void setRole(String role) {this.role = role;}
 }

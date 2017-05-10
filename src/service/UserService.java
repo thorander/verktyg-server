@@ -23,4 +23,8 @@ public class UserService {
         em.persist(user);
         em.getTransaction().commit();
     }
+
+    public EntityManager getEm(){
+        return em;
+    }
 }
