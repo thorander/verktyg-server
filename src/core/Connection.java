@@ -4,6 +4,7 @@ import entity.Answer;
 import entity.Question;
 import entity.Test;
 import entity.User;
+import service.TestService;
 import service.UserService;
 
 import javax.persistence.NoResultException;
@@ -22,6 +23,7 @@ public class Connection extends Thread{
     private String input;
 
     private UserService us;
+    private TestService ts;
 
     private Question question;
 
@@ -29,6 +31,7 @@ public class Connection extends Thread{
         this.socket = socket;
         this.user = user;
         us = new UserService();
+        ts = new TestService();
     }
 
     public void run(){
@@ -75,13 +78,9 @@ public class Connection extends Thread{
                 }
                 break;
             case "CREATEQUIZ":
-                try {
-                    t = new Test(split[1], split[2]);
-                    System.out.println(t);
-
-                } catch(NoResultException e) {
-                    out.println("ERROR# Couldn't save the quiz.");
-                }
+                t = new Test(split[1], split[2]);
+                ts.createTest(t);
+                break;
         }
     }
 
