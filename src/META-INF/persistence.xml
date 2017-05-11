@@ -10,6 +10,7 @@
         <class>entity.useranswers.UAnswer</class>
         <class>entity.useranswers.UQuestion</class>
         <class>entity.Comment</class>
+        <class>entity.useranswers.UserGroup</class>
 
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/testverktyg?zeroDateTimeBehavior=convertToNull"/>

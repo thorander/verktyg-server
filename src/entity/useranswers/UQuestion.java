@@ -1,5 +1,6 @@
 package entity.useranswers;
 
+import entity.Answer;
 import entity.Question;
 
 import javax.persistence.*;
@@ -25,7 +26,7 @@ public class UQuestion {
     public UQuestion(Question question, int UQuestionId) {
         this.UQuestionId = UQuestionId;
         this.question = question;
-        this.userAnswers = new ArrayList();
+        this.userAnswers = new ArrayList<UAnswer>();
 
 
     }
