@@ -30,9 +30,6 @@ public class Test {
 
     private int timeLimit;
 
-
-
-
     public Test(String title){
         this();
         this.title = title;
@@ -76,5 +73,9 @@ public class Test {
 
     public void setCreator(User creator) {
         this.creator = creator;
+    }
+
+    public String toString(){
+        return title + " ; " + questions.size();
     }
 }

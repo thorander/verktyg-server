@@ -81,6 +81,36 @@ public class Connection extends Thread{
                 t = new Test(split[1], split[2]);
                 ts.createTest(t);
                 break;
+            case "CREATETEST":
+                ts.setTest(new Test(split[1]));
+                break;
+            case "QUESTION":
+                for(int i = 0; i < split.length; i++){
+                    System.out.println(i + " " + split[i]);
+                }
+                int i = 0;
+                while(i < split.length){
+                    if(split[i].equals("QUESTION")){
+                        Question q = new Question(split[++i], ts.getTest());
+                        System.out.println(q.getQuestion());
+                        i++;
+                        while(i + 1 < split.length){
+                            if(split[++i].equals("ANSWER")){
+                                Answer a = new Answer(split[++i], split[++i].equals("true") ? true : false, q);
+                                q.addAnswer(a);
+                            } else {
+                                break;
+                            }
+                        }
+                        System.out.println("Adding the question");
+                        ts.addQuestion(q);
+                    }
+                    i++;
+                }
+                break;
+            case "PERSISTTEST":
+                ts.persistTest();
+                break;
         }
     }
 

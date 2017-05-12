@@ -1,5 +1,6 @@
 package service;
 
+import entity.Question;
 import entity.Test;
 import entity.User;
 
@@ -22,11 +23,27 @@ public class TestService {
         em = emf.createEntityManager();
     }
 
-    public void createTest(Test test){
-        this.test = test;
+    public void setTest(Test t){
+        test = t;
+    }
+
+    public Test getTest(){
+        return test;
+    }
+
+    public void addQuestion(Question q){
+        test.addQuestion(q);
+    }
+
+    public void persistTest(){
         em.getTransaction().begin();
         em.persist(test);
         em.getTransaction().commit();
+    }
+
+    public void createTest(Test test){
+        this.test = test;
+        persistTest();
     }
 
     public EntityManager getEm(){
