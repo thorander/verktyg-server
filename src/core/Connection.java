@@ -85,8 +85,10 @@ public class Connection extends Thread{
                 ts.setTest(new Test(split[1]));
                 break;
             case "QUESTION":
-                for(int i = 0; i < split.length; i++){
-                    System.out.println(i + " " + split[i]);
+                if(Main.DEBUG){
+                    for(int i = 0; i < split.length; i++){
+                        System.out.println(i + " " + split[i]);
+                    }
                 }
                 int i = 0;
                 while(i < split.length){

@@ -1,17 +1,18 @@
+package core;
+
 import core.Server;
 import entity.Answer;
 import entity.Question;
 import entity.Test;
 import entity.User;
-import entity.useranswers.UTest;
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import javax.persistence.*;
 
 public class Main extends Application {
+
+    public static boolean DEBUG = true;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
