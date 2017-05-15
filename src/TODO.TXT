@@ -1,0 +1,6 @@
+Connection
+    - Gör så den också jämför password med databasen innan den skickar tillbaka login-okej
+
+TestService
+    - Se till att den som är inloggad kopplas till testet som persisteras.
+
