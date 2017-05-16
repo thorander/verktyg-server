@@ -38,6 +38,7 @@ public class UserGroup {
         this.groupName = groupName;
     }
 
+
     public String getGroupName() {
         return groupName;
     }
