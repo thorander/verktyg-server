@@ -63,6 +63,7 @@ public class Connection extends Thread{
         String[] split = input.split("#");
         User u;
         Test t;
+        User returnUser;
         switch(split[0]){
             case "REGISTER":
                 u = new User(split[1], split[2], split[3], split[4], split[5]);
@@ -72,7 +73,16 @@ public class Connection extends Thread{
                 TypedQuery<User> userByUsername = us.getEm().createNamedQuery("User.findByName", User.class);
                 try{
                     u = userByUsername.setParameter("username", split[1]).getSingleResult();
+                    if(!u.getPassword().equals(split[2])){
+                        out.println("ERROR#Wrong password");
+                        return;
+                    }
                     out.println("LOGIN#" + u.getFirstName() + "#" + u.getRole() + "#" + u.getUid());
+                    returnUser = u;
+                    //System.out.println(returnUser);
+                    t = new Test();
+                    t.setCreator(returnUser);
+
                 } catch (NoResultException e){
                     out.println("ERROR#No such user registered. Check your username.");
                 }
