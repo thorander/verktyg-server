@@ -32,7 +32,7 @@ public class Main extends Application {
 
         Test t = new Test("ESC2017");
 
-        Question q1 = new Question("Var hålls Eurovision Song Contest i år?", t);
+        Question q1 = new Question("Var hålls Eurovision Song Contest i år?", "One choice", t);
         Answer a1q1 = new Answer("Kiev", true, q1);
         Answer a2q1 = new Answer("Stockholm", false, q1);
         q1.addAnswer(a1q1);

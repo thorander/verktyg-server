@@ -13,17 +13,20 @@ public class Question {
     private int id;
     private String question;
 
+    private String questionType;
+
     @OneToMany(targetEntity = Answer.class, cascade = CascadeType.PERSIST)
     private List answers;
 
     @OneToOne
     private Test test;
 
-    public Question(String question, Test test) {
+    public Question(String question, String questionType, Test test) {
         super();
         this.question = question;
         this.test = test;
         answers = new ArrayList<Answer>();
+        this.questionType = questionType;
     }
 
     public Question() {
@@ -48,5 +51,9 @@ public class Question {
     public void addAnswer(Answer a){
         answers.add(a);
     }
+
+    public void setQuestionType(String questionType){this.questionType = questionType;}
+
+    public String getQuestionType(){return questionType;}
 
 }

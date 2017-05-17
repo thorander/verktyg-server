@@ -73,16 +73,20 @@ public class Connection extends Thread{
                 try{
                     u = userByUsername.setParameter("username", split[1]).getSingleResult();
                     out.println("LOGIN#" + u.getFirstName() + "#" + u.getRole() + "#" + u.getUid());
+                    user = u;
                 } catch (NoResultException e){
                     out.println("ERROR#No such user registered. Check your username.");
                 }
                 break;
             case "CREATEQUIZ":
                 t = new Test(split[1], split[2]);
+
                 ts.createTest(t);
                 break;
             case "CREATETEST":
-                ts.setTest(new Test(split[1]));
+                Test test = new Test(split[1]);
+                test.setCreator(user);
+                ts.setTest(test);
                 break;
             case "QUESTION":
                 if(Main.DEBUG){
@@ -93,9 +97,7 @@ public class Connection extends Thread{
                 int i = 0;
                 while(i < split.length){
                     if(split[i].equals("QUESTION")){
-                        Question q = new Question(split[++i], ts.getTest());
-                        System.out.println(q.getQuestion());
-                        i++;
+                        Question q = new Question(split[++i], split[++i], ts.getTest());
                         while(i + 1 < split.length){
                             if(split[++i].equals("ANSWER")){
                                 Answer a = new Answer(split[++i], split[++i].equals("true") ? true : false, q);
@@ -104,7 +106,6 @@ public class Connection extends Thread{
                                 break;
                             }
                         }
-                        System.out.println("Adding the question");
                         ts.addQuestion(q);
                     }
                     i++;
