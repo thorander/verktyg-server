@@ -9,6 +9,12 @@ import java.util.List;
 @Entity
 @NamedQuery(name="User.findByName",
         query="SELECT c FROM User c WHERE c.username = :username")
+
+
+
+
+
+
 @Table
 public class User {
     @Id
@@ -46,7 +52,6 @@ public class User {
         super();
         testsToTake = new ArrayList<Test>();
         takenTests = new ArrayList<UTest>();
-
 }
 
     public int getUid() {
@@ -84,4 +89,5 @@ public class User {
     public String getRole() {return role;}
 
     public void setRole(String role) {this.role = role;}
+
 }

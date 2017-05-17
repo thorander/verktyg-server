@@ -72,6 +72,10 @@ public class Connection extends Thread{
                 TypedQuery<User> userByUsername = us.getEm().createNamedQuery("User.findByName", User.class);
                 try{
                     u = userByUsername.setParameter("username", split[1]).getSingleResult();
+                    if(!u.getPassword().equals(split[2])){
+                        out.println("ERROR#Wrong password");
+                        return;
+                    }
                     out.println("LOGIN#" + u.getFirstName() + "#" + u.getRole() + "#" + u.getUid());
                     user = u;
                 } catch (NoResultException e){
@@ -80,7 +84,6 @@ public class Connection extends Thread{
                 break;
             case "CREATEQUIZ":
                 t = new Test(split[1], split[2]);
-
                 ts.createTest(t);
                 break;
             case "CREATETEST":
@@ -106,6 +109,7 @@ public class Connection extends Thread{
                                 break;
                             }
                         }
+                        System.out.println("Adding the question");
                         ts.addQuestion(q);
                     }
                     i++;
