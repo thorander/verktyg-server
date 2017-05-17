@@ -67,6 +67,7 @@ public class Connection extends Thread{
             case "REGISTER":
                 u = new User(split[1], split[2], split[3], split[4], split[5]);
                 us.createUser(u);
+                out.println("REGSUCCESS#Mhmm");
                 break;
             case "LOGIN":
                 TypedQuery<User> userByUsername = us.getEm().createNamedQuery("User.findByName", User.class);
@@ -117,6 +118,12 @@ public class Connection extends Thread{
                 break;
             case "PERSISTTEST":
                 ts.persistTest();
+                break;
+            case "GETAVAILABLETESTS":
+                String s = user.getAvailableTests();
+                if(!s.equals("")){
+                    out.println(s);
+                }
                 break;
         }
     }
