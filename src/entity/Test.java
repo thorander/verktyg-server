@@ -1,9 +1,12 @@
 package entity;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Entity
 public class Test {
@@ -23,12 +26,13 @@ public class Test {
     @ManyToOne
     private User creator;
 
-/*    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.DATE)
     private Date open;
     @Temporal(TemporalType.DATE)
-    private Date close;*/
+    private Date close;
 
     private int timeLimit;
+
 
     public Test(String title){
         this();
@@ -39,6 +43,22 @@ public class Test {
     public Test(String title, String description){
         this(title);
         this.description = description;
+    }
+
+    public Test(String title, String openDate, String closeDate) {
+        /*DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
+        formatter = formatter.withLocale(Locale.getDefault() );
+        open = LocalDate.parse(openDate, formatter);
+        close = LocalDate.parse(closeDate, formatter);*/
+        DateFormat formatter;
+        formatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            open = formatter.parse(openDate);
+            close = formatter.parse(closeDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public Test(){
@@ -55,7 +75,7 @@ public class Test {
     public void addTestTaker(User u){ testTakers.add(u);}
     public void removeTestTaker(User u){testTakers.remove(u);}
 
-/*    public Date getOpen() {
+    public Date getOpen() {
         return open;
     }
 
@@ -69,7 +89,7 @@ public class Test {
 
     public void setOpen(Date open) {
         this.open = open;
-    }*/
+    }
 
     public void setCreator(User creator) {
         this.creator = creator;

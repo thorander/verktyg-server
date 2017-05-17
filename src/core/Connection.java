@@ -87,7 +87,8 @@ public class Connection extends Thread{
                 ts.createTest(t);
                 break;
             case "CREATETEST":
-                Test test = new Test(split[1]);
+                System.out.println("Array length: " + split.length);
+                Test test = new Test(split[1], split[2], split[3]);
                 test.setCreator(user);
                 ts.setTest(test);
                 break;
