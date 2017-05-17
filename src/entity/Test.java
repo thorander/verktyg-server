@@ -44,10 +44,6 @@ public class Test {
     }
 
     public Test(String title, String openDate, String closeDate) {
-        /*DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
-        formatter = formatter.withLocale(Locale.getDefault() );
-        open = LocalDate.parse(openDate, formatter);
-        close = LocalDate.parse(closeDate, formatter);*/
         DateFormat formatter;
         formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
