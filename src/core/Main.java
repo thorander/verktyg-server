@@ -41,16 +41,17 @@ public class Main extends Application {
         User markus = new User("Markus", "Gustafsson", "mackan", "1234", "admin");
 
         t.addQuestion(q1);
-        t.addTestTaker(markus);
+        markus.addTestToTake(t);
         t.setCreator(markus);
 
         System.out.println("Everything created up to here.");
 
-        em.getTransaction().begin();
         System.out.println("Begun transaction");
+        em.getTransaction().begin();
+        em.persist(markus);
         em.persist(t);
-        System.out.println("Finished persisting");
         em.getTransaction().commit();
+
         System.out.println("Persistence committed. Ready to use.");
     }
 }

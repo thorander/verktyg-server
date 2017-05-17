@@ -10,8 +10,6 @@ public class Test {
 
     @OneToMany(targetEntity = Question.class, cascade = CascadeType.PERSIST)
     private List questions;
-    @OneToMany(targetEntity = User.class, cascade = CascadeType.PERSIST)
-    private List testTakers;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -45,15 +43,12 @@ public class Test {
         title = "";
         timeLimit = 0;
         questions = new ArrayList<Question>();
-        testTakers = new ArrayList<User>();
     }
 
     public void addQuestion(Question q){
         questions.add(q);
     }
 
-    public void addTestTaker(User u){ testTakers.add(u);}
-    public void removeTestTaker(User u){testTakers.remove(u);}
 
 /*    public Date getOpen() {
         return open;
@@ -78,5 +73,9 @@ public class Test {
 
     public String toString(){
         return title + " ; " + questions.size();
+    }
+
+    public String getTitle(){
+        return title;
     }
 }
