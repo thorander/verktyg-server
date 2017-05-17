@@ -73,6 +73,7 @@ public class Test {
 
     public void setCreator(User creator) {
         this.creator = creator;
+        System.out.println(creator);
     }
 
     public String toString(){
