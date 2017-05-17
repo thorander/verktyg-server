@@ -109,7 +109,6 @@ public class Connection extends Thread{
                                 break;
                             }
                         }
-                        System.out.println("Adding the question");
                         ts.addQuestion(q);
                     }
                     i++;
