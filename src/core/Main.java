@@ -39,7 +39,9 @@ public class Main extends Application {
         q1.addAnswer(a2q1);
 
         User markus = new User("Markus", "Gustafsson", "mackan", "1234", "admin");
-
+        User philip = new User("Philip", "Persson", "chulle","123","admin");
+        t.addTestTaker(philip);
+        t.setCreator(philip);
         t.addQuestion(q1);
         markus.addTestToTake(t);
         t.setCreator(markus);
