@@ -1,5 +1,7 @@
 package entity.useranswers;
 
+import core.Connection;
+import core.Main;
 import entity.User;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
@@ -21,15 +23,14 @@ public class UserGroup {
 
     private String groupName;
 
-    @OneToMany(targetEntity = User.class, cascade = CascadeType.PERSIST)
+    @OneToMany(targetEntity = User.class )
     private List users;
 
 
     public UserGroup(){
         this.groupNumber = groupNumber;
         this.users = new ArrayList<User>();
-        this.groupName = groupName;
-
+        this.groupName = "CREATEGROUP#";
 
     }
 

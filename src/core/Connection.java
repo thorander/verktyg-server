@@ -4,18 +4,24 @@ import entity.Answer;
 import entity.Question;
 import entity.Test;
 import entity.User;
+import entity.useranswers.UserGroup;
+import service.GroupService;
 import service.TestService;
 import service.UserService;
 
+import javax.jws.soap.SOAPBinding;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Connection extends Thread{
 
     private User user;
+    private List users;
     private Socket socket;
     private PrintWriter out;
     private BufferedReader in;
@@ -24,6 +30,7 @@ public class Connection extends Thread{
 
     private UserService us;
     private TestService ts;
+    private UserGroup ug;
 
     private Question question;
 
@@ -115,6 +122,24 @@ public class Connection extends Thread{
                     }
                     i++;
                 }
+                break;
+
+            case "CREATEGROUP":
+                ug = new UserGroup();
+                users = new ArrayList<User>();
+                ug.setGroupName(split[1]);
+                ug.setUsers(users);
+                GroupService gs = new GroupService();
+                gs.setUg(ug);
+                gs.persistGroup();
+
+                break;
+            case "ADDUSER":
+                for (int x = 0; x < split.length; x++){
+                    if (split[0].equals("ADDUSER")){
+                        ug = new UserGroup();
+                        ug.setUsers(users);
+                }}
                 break;
             case "PERSISTTEST":
                 ts.persistTest();
