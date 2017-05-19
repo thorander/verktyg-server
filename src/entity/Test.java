@@ -44,6 +44,7 @@ public class Test {
     }
 
     public Test(String title, String openDate, String closeDate) {
+        this(title);
         DateFormat formatter;
         formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -84,7 +85,6 @@ public class Test {
 
     public void setCreator(User creator) {
         this.creator = creator;
-        System.out.println(creator);
     }
 
     public String toString(){

@@ -27,28 +27,37 @@ public class Main extends Application {
         Server server = new Server(4436);
         server.start();
 
+        persistTestData();
+    }
+
+    private static void persistTestData(){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("JPAVerktyg");
         EntityManager em = emf.createEntityManager();
 
-        Test t = new Test("ESC2017");
+        //Create users here
+        User markus = new User("Markus", "Gustafsson", "mackan", "1234", "admin");
+        User teacher = new User("Teacher", "Teacherson", "teacher", "1234", "teacher");
+        User student = new User("Student", "Studentson", "student", "1234", "student");
 
+        //We create a test
+        Test t = new Test("ESC2017");
+        t.setCreator(markus);
         Question q1 = new Question("Var hålls Eurovision Song Contest i år?", "One choice", t);
         Answer a1q1 = new Answer("Kiev", true, q1);
         Answer a2q1 = new Answer("Stockholm", false, q1);
         q1.addAnswer(a1q1);
         q1.addAnswer(a2q1);
-
-        User markus = new User("Markus", "Gustafsson", "mackan", "1234", "admin");
-
         t.addQuestion(q1);
+
+        //Add to the user which tests are available for them
         markus.addTestToTake(t);
-        t.setCreator(markus);
 
-        System.out.println("Everything created up to here.");
-
-        System.out.println("Begun transaction");
+        //Add everything to be persisted.
+        //Only users and tests, questions and answers persist by cascade.
         em.getTransaction().begin();
         em.persist(markus);
+        em.persist(teacher);
+        em.persist(student);
         em.persist(t);
         em.getTransaction().commit();
 
