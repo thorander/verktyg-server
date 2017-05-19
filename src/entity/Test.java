@@ -66,7 +66,7 @@ public class Test {
     }
 
 
-   /* public Date getOpen() {
+    public Date getOpen() {
         return open;
     }
 
@@ -80,7 +80,7 @@ public class Test {
 
     public void setOpen(Date open) {
         this.open = open;
-    }*/
+    }
 
     public void setCreator(User creator) {
         this.creator = creator;

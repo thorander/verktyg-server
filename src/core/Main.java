@@ -61,6 +61,7 @@ public class Main extends Application {
         em.persist(markus);
         em.persist(teacher);
         em.persist(student);
+        em.persist(philip);
         em.persist(t);
         em.getTransaction().commit();
 
