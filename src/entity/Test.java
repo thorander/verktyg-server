@@ -4,8 +4,6 @@ import javax.persistence.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Entity
@@ -28,8 +26,8 @@ public class Test {
     private Date open;
     @Temporal(TemporalType.DATE)
     private Date close;
-
-    private int timeLimit;
+    /*@Temporal(TemporalType.TIME)*/
+    private Integer timeLimit;
 
 
     public Test(String title){
@@ -43,13 +41,14 @@ public class Test {
         this.description = description;
     }
 
-    public Test(String title, String openDate, String closeDate) {
+    public Test(String title, String openDate, String closeDate, String time) {
         this(title);
         DateFormat formatter;
         formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
             open = formatter.parse(openDate);
             close = formatter.parse(closeDate);
+            timeLimit = Integer.parseInt(time);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -67,7 +66,7 @@ public class Test {
     }
 
 
-    public Date getOpen() {
+   /* public Date getOpen() {
         return open;
     }
 
@@ -81,7 +80,7 @@ public class Test {
 
     public void setOpen(Date open) {
         this.open = open;
-    }
+    }*/
 
     public void setCreator(User creator) {
         this.creator = creator;

@@ -38,6 +38,7 @@ public class Main extends Application {
         User markus = new User("Markus", "Gustafsson", "mackan", "1234", "admin");
         User teacher = new User("Teacher", "Teacherson", "teacher", "1234", "teacher");
         User student = new User("Student", "Studentson", "student", "1234", "student");
+        User philip = new User("Philip", "Persson", "chulle","123","admin");
 
         //We create a test
         Test t = new Test("ESC2017");
@@ -48,6 +49,8 @@ public class Main extends Application {
         q1.addAnswer(a1q1);
         q1.addAnswer(a2q1);
         t.addQuestion(q1);
+
+        t.setCreator(philip);
 
         //Add to the user which tests are available for them
         markus.addTestToTake(t);
