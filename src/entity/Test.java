@@ -16,9 +16,7 @@ public class Test {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int testId;
 
-    @Column
     private String title;
-    @Column
     private String description;
 
     @ManyToOne
@@ -28,8 +26,8 @@ public class Test {
     private Date open;
     @Temporal(TemporalType.DATE)
     private Date close;
-    @Column
-    private Integer time;
+    /*@Temporal(TemporalType.TIME)*/
+    private Integer timeLimit;
 
 
     public Test(String title){
@@ -43,15 +41,14 @@ public class Test {
         this.description = description;
     }
 
-    public Test(String qTitle, String qDescription, String openDate, String closeDate, String qTime) {
+    public Test(String title, String openDate, String closeDate, String time) {
+        this(title);
         DateFormat formatter;
         formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            title = qTitle;
-            description = qDescription;
             open = formatter.parse(openDate);
             close = formatter.parse(closeDate);
-            time = Integer.parseInt(qTime);
+            timeLimit = Integer.parseInt(time);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -60,8 +57,7 @@ public class Test {
 
     public Test(){
         title = "";
-        description = "";
-        time = 0;
+        timeLimit = 0;
         questions = new ArrayList<Question>();
     }
 
@@ -70,7 +66,7 @@ public class Test {
     }
 
 
-   /* public Date getOpen() {
+    public Date getOpen() {
         return open;
     }
 
@@ -84,11 +80,10 @@ public class Test {
 
     public void setOpen(Date open) {
         this.open = open;
-    }*/
+    }
 
     public void setCreator(User creator) {
         this.creator = creator;
-        System.out.println(creator);
     }
 
     public String toString(){
