@@ -1,8 +1,5 @@
 package service;
 
-/**
- * Created by phili on 2017-05-23.
- */
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;

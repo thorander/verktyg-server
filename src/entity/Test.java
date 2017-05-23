@@ -7,6 +7,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Entity
+@NamedQuery(name="Test.findById",
+        query="SELECT c FROM Test c WHERE c.testId = :testId")
 public class Test {
 
     @OneToMany(targetEntity = Question.class, cascade = CascadeType.PERSIST)
@@ -45,6 +47,7 @@ public class Test {
 
 
     public Test(String qTitle, String qDescription, String openDate, String closeDate, String qTime) {
+        this(qTitle, qDescription);
         DateFormat formatter;
         formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -100,7 +103,19 @@ public class Test {
         return title;
     }
 
+    public int getTestId(){
+        return testId;
+    }
+
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Integer getTime(){
+        return time;
+    }
+
+    public String getDescription(){
+        return description;
     }
 }

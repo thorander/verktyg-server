@@ -1,6 +1,7 @@
 package entity;
 
 import entity.useranswers.UTest;
+import org.eclipse.persistence.indirection.IndirectList;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class User {
     private String username;
     private String password;
 
-    @OneToMany(targetEntity = Test.class, cascade = CascadeType.PERSIST)
+    @OneToMany(targetEntity = Test.class)
     private List testsToTake;
 
     @OneToMany(targetEntity = UTest.class, cascade = CascadeType.PERSIST)
@@ -45,8 +46,8 @@ public class User {
 
     public User(){
         super();
-        testsToTake = new ArrayList<Test>();
-        takenTests = new ArrayList<UTest>();
+        testsToTake = new IndirectList();
+        takenTests = new IndirectList();
 }
 
     public int getUid() {
@@ -86,13 +87,13 @@ public class User {
     public void setRole(String role) {this.role = role;}
 
     public void addTestToTake(Test t){
-        ((ArrayList<Test>)testsToTake).add(t);
+        testsToTake.add(t);
     }
 
     public String getAvailableTests(){
         String tests = "AVAILABLETESTS#";
         for(Object o : testsToTake){
-            tests += ((Test)o).getTitle() + "#";
+            tests += ((Test)o).getTitle() + "#" + ((Test)o).getTestId() + "#";
         }
         return tests;
     }

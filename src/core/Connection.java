@@ -143,6 +143,9 @@ public class Connection extends Thread{
                 break;
             case "PERSISTTEST":
                 ts.persistTest();
+                us.getEm().getTransaction().begin();
+                user.addTestToTake(ts.getTest());
+                us.getEm().getTransaction().commit();
                 break;
             case "GETAVAILABLETESTS":
                 String s = user.getAvailableTests();
@@ -150,6 +153,19 @@ public class Connection extends Thread{
                     out.println(s);
                 }
                 break;
+            case "FETCHTESTBYID":
+                TypedQuery<Test> testById = ts.getEm().createNamedQuery("Test.findById", Test.class);
+                try{
+                    Test testFromId = testById.setParameter("testId", Integer.parseInt(split[1])).getSingleResult();
+                    System.out.println(testFromId.getTitle());
+                    out.println("TAKETEST#"
+                                + testFromId.getTitle() + "#"
+                                + testFromId.getDescription() + "#"
+                                + testFromId.getTime() + "#"
+                                + testFromId.getTestId());
+                } catch (NoResultException e){
+                    out.println("ERROR#No such test. This shouldn't happen.");
+                }
         }
     }
 
