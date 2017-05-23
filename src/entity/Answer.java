@@ -12,6 +12,7 @@ public class Answer {
     private int id;
     private String answer;
     private boolean correct;
+    private int answerOrder;
 
     @OneToOne
     private Question question;
@@ -21,6 +22,11 @@ public class Answer {
         this.answer = answer;
         this.correct = correct;
         this.question = question;
+    }
+
+    public Answer(String answer, boolean correct, Question question, int answerOrder){
+        this(answer, correct, question);
+        this.answerOrder = answerOrder;
     }
 
     public Answer() {
@@ -54,5 +60,13 @@ public class Answer {
 
     public void setCorrect(boolean correct){
         this.correct = correct;
+    }
+
+    public int getAnswerOrder(){
+        return answerOrder;
+    }
+
+    public void setOrder(int answerOrder){
+        this.answerOrder = answerOrder;
     }
 }

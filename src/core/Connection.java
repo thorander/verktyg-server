@@ -112,7 +112,7 @@ public class Connection extends Thread{
                         Question q = new Question(split[++i], split[++i], ts.getTest());
                         while(i + 1 < split.length){
                             if(split[++i].equals("ANSWER")){
-                                Answer a = new Answer(split[++i], split[++i].equals("true") ? true : false, q);
+                                Answer a = new Answer(split[++i], split[++i].equals("true") ? true : false, q, Integer.parseInt(split[++i]));
                                 q.addAnswer(a);
                             } else {
                                 break;
@@ -163,6 +163,10 @@ public class Connection extends Thread{
                                 + testFromId.getDescription() + "#"
                                 + testFromId.getTime() + "#"
                                 + testFromId.getTestId());
+                    for(Object o : testFromId.getQuestions()){
+                        out.println(((Question)o).getSendData());
+                    }
+                    out.println("SHOWTEST#");
                 } catch (NoResultException e){
                     out.println("ERROR#No such test. This shouldn't happen.");
                 }

@@ -15,6 +15,8 @@ public class Question {
 
     private String questionType;
 
+    private int score;
+
     @OneToMany(targetEntity = Answer.class, cascade = CascadeType.PERSIST)
     private List answers;
 
@@ -55,5 +57,21 @@ public class Question {
     public void setQuestionType(String questionType){this.questionType = questionType;}
 
     public String getQuestionType(){return questionType;}
+
+    public String getSendData(){
+        String s = "ADDTQUESTION#";
+        s += getQuestion() + "#";
+        s += getQuestionType() + "#";
+        s += getId();
+        for(Object o : answers){
+            Answer temp = ((Answer)o);
+            s += "#ANSWER#";
+            s += temp.getAnswer() + "#";
+            s += temp.getId() + "#";
+            s += temp.isCorrect() + "#";
+            s += temp.getAnswerOrder();
+        }
+        return s;
+    }
 
 }

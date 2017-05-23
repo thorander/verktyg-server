@@ -19,6 +19,8 @@ public class UQuestion {
     @OneToMany(targetEntity = UAnswer.class, cascade = CascadeType.PERSIST)
     private List userAnswers;
 
+    private int score;
+
     public UQuestion() {
 
     }

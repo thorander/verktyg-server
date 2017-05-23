@@ -1,5 +1,7 @@
 package entity;
 
+import org.eclipse.persistence.indirection.IndirectList;
+
 import javax.persistence.*;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -32,6 +34,8 @@ public class Test {
     private Date close;
     @Column
     private Integer time;
+
+    private boolean selfcorrecting, showResult;
 
 
     public Test(String title){
@@ -66,7 +70,7 @@ public class Test {
         title = "";
         description = "";
         time = 0;
-        questions = new ArrayList<Question>();
+        questions = new IndirectList();
     }
 
 
@@ -117,5 +121,9 @@ public class Test {
 
     public String getDescription(){
         return description;
+    }
+
+    public IndirectList getQuestions(){
+        return (IndirectList)questions;
     }
 }

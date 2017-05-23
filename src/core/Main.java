@@ -44,8 +44,8 @@ public class Main extends Application {
         Test t = new Test("ESC2017");
         t.setCreator(markus);
         Question q1 = new Question("Var hålls Eurovision Song Contest i år?", "One choice", t);
-        Answer a1q1 = new Answer("Kiev", true, q1);
-        Answer a2q1 = new Answer("Stockholm", false, q1);
+        Answer a1q1 = new Answer("Kiev", true, q1, 1);
+        Answer a2q1 = new Answer("Stockholm", false, q1, 2);
         q1.addAnswer(a1q1);
         q1.addAnswer(a2q1);
         t.addQuestion(q1);

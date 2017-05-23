@@ -13,6 +13,7 @@ public class UAnswer {
     @OneToOne
     private Answer answer;
     private boolean correctAnswer;
+    private int answerOrder;
 
     public UAnswer() {
 
