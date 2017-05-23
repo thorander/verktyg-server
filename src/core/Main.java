@@ -22,7 +22,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-/*        launch(args);*/
+ //       launch(args);
 
         Server server = new Server(4436);
         server.start();
@@ -53,7 +53,7 @@ public class Main extends Application {
         t.setCreator(philip);
 
         //Add to the user which tests are available for them
-        markus.addTestToTake(t);
+        //markus.addTestToTake(t);
 
         //Add everything to be persisted.
         //Only users and tests, questions and answers persist by cascade.
