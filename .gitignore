@@ -8,8 +8,18 @@
 *.war
 *.ear
 
+
 vcs.xml
 workspace.xml
 
+!itext-pdfa-5.5.4.jar
+!itext-pdfa-5.5.4-javadoc.jar
+!itext-pdfa-5.5.4-sources.jar
+!itext-xtra-5.5.4.jar
+!itext-xtra-5.5.4-javadoc.jar
+!itext-xtra-5.5.4-sources.jar
+!itextpdf-5.5.4.jar
+!itextpdf-5.5.4-javadoc.jar
+!itextpdf-5.5.4-sources.jar
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
