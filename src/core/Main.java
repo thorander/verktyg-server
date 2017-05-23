@@ -40,7 +40,6 @@ public class Main extends Application {
 
         User markus = new User("Markus", "Gustafsson", "mackan", "1234", "admin");
         User philip = new User("Philip", "Persson", "chulle","123","admin");
-        t.addTestTaker(philip);
         t.setCreator(philip);
         t.addQuestion(q1);
         markus.addTestToTake(t);
