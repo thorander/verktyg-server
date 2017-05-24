@@ -33,7 +33,7 @@ public class Test {
     @Temporal(TemporalType.DATE)
     private Date close;
     @Column
-    private Integer time;
+    private Integer time, maxPoints;
 
     private boolean selfcorrecting, showResult;
 
@@ -42,6 +42,8 @@ public class Test {
         this();
         this.title = title;
         this.description = "";
+        this.selfcorrecting = true;
+        this.showResult = true;
     }
 
     public Test(String title, String description){
@@ -50,7 +52,7 @@ public class Test {
     }
 
 
-    public Test(String qTitle, String qDescription, String openDate, String closeDate, String qTime) {
+    public Test(String qTitle, String qDescription, String openDate, String closeDate, String qTime, String selfCorrecting, String showResults, String qPoints) {
         this(qTitle, qDescription);
         DateFormat formatter;
         formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -60,6 +62,9 @@ public class Test {
             open = formatter.parse(openDate);
             close = formatter.parse(closeDate);
             time = Integer.parseInt(qTime);
+            this.selfcorrecting = selfCorrecting.equals("true") ? true : false;
+            this.showResult = showResults.equals("true") ? true : false;
+            maxPoints = Integer.parseInt(qPoints);
         } catch (ParseException e) {
             e.printStackTrace();
         }

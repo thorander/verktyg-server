@@ -90,6 +90,12 @@ public class User {
         testsToTake.add(t);
     }
 
+    public void removeTestToTake(Test t) { testsToTake.remove(t); }
+
+    public void addTakenTest(UTest t) { takenTests.add(t);}
+
+    public void removeTakenTest(UTest t) { takenTests.remove(t);}
+
     public String getAvailableTests(){
         String tests = "AVAILABLETESTS#";
         for(Object o : testsToTake){
