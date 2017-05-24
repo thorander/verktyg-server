@@ -104,4 +104,9 @@ public class User {
         return tests;
     }
 
+    @Override
+    public String toString() {
+        return "User [firstName=" + firstName + "]";
+    }
+
 }
