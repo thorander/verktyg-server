@@ -23,12 +23,13 @@ public class Question {
     @OneToOne
     private Test test;
 
-    public Question(String question, String questionType, Test test) {
+    public Question(String question, String questionType, Test test, int score) {
         super();
         this.question = question;
         this.test = test;
         answers = new ArrayList<Answer>();
         this.questionType = questionType;
+        this.score = score;
     }
 
     public Question() {

@@ -12,18 +12,20 @@ public class UAnswer {
     private int UAnswerId;
     @OneToOne
     private Answer answer;
-    private boolean correctAnswer;
     private int answerOrder;
+
+    private String answerText;
 
     public UAnswer() {
 
     }
 
 
-    public UAnswer(Answer answer, boolean correctAnswer) {
+    public UAnswer(Answer answer, int answerOrder, String answerText) {
 
         this.answer = answer;
-        this.correctAnswer = correctAnswer;
+        this.answerOrder = answerOrder;
+        this.answerText = answerText;
 
     }
 
@@ -33,14 +35,6 @@ public class UAnswer {
 
     public void setAnswer(Answer answer) {
         this.answer = answer;
-    }
-
-    public void setCorrectAnswer(boolean correctAnswer) {
-        this.correctAnswer = correctAnswer;
-    }
-
-    public boolean isCorrectAnswer() {
-        return correctAnswer;
     }
 
     public Answer getAnswer() {

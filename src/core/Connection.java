@@ -100,7 +100,7 @@ public class Connection extends Thread{
                 break;
             case "CREATETEST":
                 System.out.println("Array length: " + split.length);
-                Test test = new Test(split[1], split[2], split[3], split[4], split[5]);
+                Test test = new Test(split[1], split[2], split[3], split[4], split[5], split[6], split[7], split[8]);
                 test.setCreator(user);
                 ts.setTest(test);
                 break;
@@ -113,7 +113,7 @@ public class Connection extends Thread{
                 int i = 0;
                 while(i < split.length){
                     if(split[i].equals("QUESTION")){
-                        Question q = new Question(split[++i], split[++i], ts.getTest());
+                        Question q = new Question(split[++i], split[++i], ts.getTest(), Integer.parseInt(split[++i]));
                         while(i + 1 < split.length){
                             if(split[++i].equals("ANSWER")){
                                 Answer a = new Answer(split[++i], split[++i].equals("true") ? true : false, q, Integer.parseInt(split[++i]));
@@ -187,6 +187,9 @@ public class Connection extends Thread{
                 } catch (NoResultException e){
                     out.println("ERROR#No such test. This shouldn't happen.");
                 }
+                break;
+            case "ADDTAKENTEST":
+
         }
     }
 
