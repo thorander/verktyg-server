@@ -25,7 +25,7 @@ public class User {
     @OneToMany(targetEntity = Test.class)
     private List testsToTake;
 
-    @OneToMany(targetEntity = UTest.class, cascade = CascadeType.PERSIST)
+    @OneToMany(targetEntity = UTest.class)
     private List takenTests;
 
     public User(String firstName, String lastName, String role) {

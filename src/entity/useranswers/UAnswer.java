@@ -14,6 +14,8 @@ public class UAnswer {
     private Answer answer;
     private int answerOrder;
 
+    private boolean checked;
+
     private String answerText;
 
     public UAnswer() {
@@ -26,7 +28,13 @@ public class UAnswer {
         this.answer = answer;
         this.answerOrder = answerOrder;
         this.answerText = answerText;
+        checked = false;
 
+    }
+
+    public UAnswer(Answer answer, int answerOrder, String answerText, boolean checked){
+        this(answer, answerOrder, answerText);
+        this.checked = checked;
     }
 
     public void setUAnswerId(int UAnswerId) {
@@ -43,5 +51,13 @@ public class UAnswer {
 
     public int getUAnswerId() {
         return UAnswerId;
+    }
+
+    public int getAnswerOrder(){
+        return answerOrder;
+    }
+
+    public boolean isChecked(){
+        return checked;
     }
 }

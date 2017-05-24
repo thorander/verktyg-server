@@ -128,7 +128,19 @@ public class Test {
         return description;
     }
 
+    public boolean isSelfcorrecting(){
+        return selfcorrecting;
+    }
+
+    public boolean isShowResult(){
+        return showResult;
+    }
+
     public IndirectList getQuestions(){
         return (IndirectList)questions;
+    }
+
+    public int getMaxPoints(){
+        return maxPoints;
     }
 }
