@@ -44,10 +44,11 @@ public class GroupService {
 
     public void getUsersForGroup(UserGroup ug) {
         this.userGroup = ug;
-
+        findUsers();
     }
 
     public void persistGroup(){
+        System.out.println(userGroup);
         em.getTransaction().begin();
         em.persist(userGroup);
         em.getTransaction().commit();

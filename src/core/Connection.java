@@ -136,11 +136,11 @@ public class Connection extends Thread{
             case "CREATEGROUP":
                 ug = new UserGroup(split[1]);
                 gs.createGroup(ug);
-                out.println(gs.findUsers());
                 break;
-            case "GETUSERSFORGROUP#":
-                ug = new UserGroup(split[1]);
-                gs.getUsersForGroup(ug);
+            case "GETUSERSFORGROUP":
+                /*ug = new UserGroup(split[1]);
+                gs.getUsersForGroup(ug);*/
+                out.println(gs.findUsers());
                 break;
             case "USERSFORGROUP":
                 break;
