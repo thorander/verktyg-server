@@ -30,7 +30,9 @@ public class Connection extends Thread{
 
     private UserService us;
     private TestService ts;
-    private UserGroup ug;
+
+    private GroupService gs;
+    private UserGroup usergroup;
 
     private Question question;
 
@@ -39,6 +41,7 @@ public class Connection extends Thread{
         this.user = user;
         us = new UserService();
         ts = new TestService();
+        gs = new GroupService();
     }
 
     public void run(){
@@ -70,6 +73,7 @@ public class Connection extends Thread{
         String[] split = input.split("#");
         User u;
         Test t;
+        UserGroup ug;
         switch(split[0]){
             case "REGISTER":
                 u = new User(split[1], split[2], split[3], split[4], split[5]);
@@ -125,21 +129,34 @@ public class Connection extends Thread{
                 break;
 
             case "CREATEGROUP":
-                ug = new UserGroup();
+                /*ug = new UserGroup();
                 users = new ArrayList<User>();
                 ug.setGroupName(split[1]);
                 ug.setUsers(users);
                 GroupService gs = new GroupService();
                 gs.setUg(ug);
-                gs.persistGroup();
-
+                gs.persistGroup();*/
+                ug = new UserGroup(split[1]);
+                gs.createGroup(ug);
+                break;
+            case "ADDGROUP":
+                TypedQuery<UserGroup> groupByName = gs.getEm().createNamedQuery("UserGroup.findAll", UserGroup.class);
+                //List<UserGroup> results = groupByName.getResultList();
+                try{
+                    ug = groupByName.setParameter("groupname", split[1]).getSingleResult();
+                    System.out.println(ug.getGroupName());
+                    out.println("ADDGROUP#" + ug.getGroupName());
+                    usergroup = ug;
+                } catch (NoResultException e){
+                    out.println("ERROR#No group registered.");
+                }
                 break;
             case "ADDUSER":
-                for (int x = 0; x < split.length; x++){
+              /*  for (int x = 0; x < split.length; x++){
                     if (split[0].equals("ADDUSER")){
                         ug = new UserGroup();
                         ug.setUsers(users);
-                }}
+                }}*/
                 break;
             case "PERSISTTEST":
                 ts.persistTest();

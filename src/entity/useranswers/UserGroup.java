@@ -5,6 +5,7 @@ import core.Main;
 import entity.User;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
+import org.eclipse.persistence.indirection.IndirectList;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,48 +16,52 @@ import java.util.List;
  */
 
 @Entity
+@NamedQuery(name="UserGroup.findAll",
+        query="SELECT c FROM UserGroup c WHERE c.groupName = :groupname")
 public class UserGroup {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int groupNumber;
+    private int groupId;
 
+    @Column
     private String groupName;
 
-    @OneToMany(targetEntity = User.class )
-    private List users;
+    /*private List groupList;*/
 
+    public UserGroup(String gn){
+        this();
+        this.groupName = gn;
+    }
 
     public UserGroup(){
-        this.groupNumber = groupNumber;
-        this.users = new ArrayList<User>();
-        this.groupName = "CREATEGROUP#";
-
+        groupId = 0;
+        groupName = "";
+        /*groupList = new IndirectList();*/
     }
 
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
+    public void setGroupId(int gi) {
+        this.groupId = gi;
     }
 
+    public int getGroupId(){
+        return groupId;
+    }
 
-    public String getGroupName() {
+    public void setGroupName(String gn) {
+        this.groupName = gn;
+    }
+
+    public String getGroupName(){
         return groupName;
     }
 
-    public int getGroupNumber() {
-        return groupNumber;
+    /*public void setGroupList(List gn) {
+        groupList.add(gn);
     }
 
-    public void setGroupNumber(int groupNumber) {
-        this.groupNumber = groupNumber;
-    }
+    public List getGroupList(){
+        return groupList;
+    }*/
 
-    public List getUsers() {
-        return users;
-    }
-
-    public void setUsers(List users) {
-        this.users = users;
-    }
 }

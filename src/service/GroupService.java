@@ -15,28 +15,33 @@ public class GroupService {
     EntityManagerFactory emf;
     EntityManager em;
 
-    private UserGroup ug;
-
-    public EntityManager getEm() {
-        return em;
-    }
-
-
-    public UserGroup getUg() {
-        return ug;
-    }
-
-    public void setUg(UserGroup ug) {
-        this.ug = ug;
-    }
+    private UserGroup userGroup;
 
     public GroupService(){
         emf = Persistence.createEntityManagerFactory("JPAVerktyg");
         em = emf.createEntityManager();
     }
+
+    public void setUserGroup(UserGroup ug){
+        userGroup = ug;
+    }
+
+    public UserGroup getUserGroup(){
+        return userGroup;
+    }
+
     public void persistGroup(){
         em.getTransaction().begin();
-        em.persist(ug);
+        em.persist(userGroup);
         em.getTransaction().commit();
+    }
+
+    public void createGroup(UserGroup ug){
+        this.userGroup = ug;
+        persistGroup();
+    }
+
+    public EntityManager getEm(){
+        return em;
     }
 }
