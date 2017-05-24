@@ -4,9 +4,13 @@ import entity.Answer;
 import entity.Question;
 import entity.Test;
 import entity.User;
+import entity.useranswers.UAnswer;
+import entity.useranswers.UQuestion;
+import entity.useranswers.UTest;
 import entity.useranswers.UserGroup;
 import service.GroupService;
 import service.TestService;
+import service.UTestService;
 import service.UserService;
 
 import javax.jws.soap.SOAPBinding;
@@ -30,6 +34,7 @@ public class Connection extends Thread{
 
     private UserService us;
     private TestService ts;
+    private UTestService uts;
 
     private GroupService gs;
     private UserGroup usergroup;
@@ -42,6 +47,7 @@ public class Connection extends Thread{
         us = new UserService();
         ts = new TestService();
         gs = new GroupService();
+        uts = new UTestService();
     }
 
     public void run(){
@@ -171,9 +177,8 @@ public class Connection extends Thread{
                 }
                 break;
             case "FETCHTESTBYID":
-                TypedQuery<Test> testById = ts.getEm().createNamedQuery("Test.findById", Test.class);
                 try{
-                    Test testFromId = testById.setParameter("testId", Integer.parseInt(split[1])).getSingleResult();
+                    Test testFromId = ts.getTestFromId(Integer.parseInt(split[1]));
                     System.out.println(testFromId.getTitle());
                     out.println("TAKETEST#"
                                 + testFromId.getTitle() + "#"
@@ -189,6 +194,27 @@ public class Connection extends Thread{
                 }
                 break;
             case "ADDTAKENTEST":
+                Test originalTest = ts.getTestFromId(Integer.parseInt(split[1]));
+                UTest utest = new UTest(originalTest, Integer.parseInt(split[2]));
+                uts.setTest(utest);
+                break;
+            case "ADDUSERQUESTION":
+                TypedQuery<Question> query = uts.getEm().createNamedQuery("Question.findById", Question.class);
+                Question resultQuestion = query.setParameter("id", Integer.parseInt(split[1])).getSingleResult();
+                UQuestion uQuestion = new UQuestion(resultQuestion);
+                for(int j = 2; j < split.length; j++){
+                    TypedQuery<Answer> answerQuery = uts.getEm().createNamedQuery("Answer.findById", Answer.class);
+                    Answer resultAnswer = answerQuery.setParameter("id", Integer.parseInt(split[j++])).getSingleResult();
+                    UAnswer uAnswer = new UAnswer(resultAnswer, Integer.parseInt(split[j++]), split[j++], split[j].equals("true") ? true : false);
+                    uQuestion.getUserAnswers().add(uAnswer);
+                }
+                uts.addQuestion(uQuestion);
+                break;
+            case "PERSISTTAKENTEST":
+                uts.persistTest();
+                us.createUser(user);
+                user.addTakenTest(uts.getTest());
+                break;
 
         }
     }

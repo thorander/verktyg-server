@@ -5,6 +5,8 @@ import javax.persistence.*;
 
 @Entity
 @Table
+@NamedQuery(name="Answer.findById",
+        query="SELECT c FROM Answer c WHERE c.id = :id")
 public class Answer {
 
     @Id

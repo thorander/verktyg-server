@@ -31,10 +31,13 @@ public class UTest {
     @OneToMany(targetEntity = UQuestion.class, cascade = CascadeType.PERSIST)
     private List questions;
 
-    public UTest(Test testAnswered){
+    public UTest(Test testAnswered, int timeSpent){
         this.testAnswered = testAnswered;
+        corrected = false;
+        showResults = false;
         questions = new IndirectList();
         turnedIn = new Date();
+        this.timeSpent = timeSpent;
     }
 
     public UTest(){}
@@ -82,5 +85,13 @@ public class UTest {
 
     public void setShowResults(boolean showResults) {
         this.showResults = showResults;
+    }
+
+    public Test getTestAnswered(){
+        return testAnswered;
+    }
+
+    public List getQuestions(){
+        return questions;
     }
 }
