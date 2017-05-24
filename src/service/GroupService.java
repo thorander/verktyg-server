@@ -22,7 +22,6 @@ public class GroupService {
 
     private UserGroup userGroup;
     private User user;
-    private Connection connection;
 
     public GroupService(){
         emf = Persistence.createEntityManagerFactory("JPAVerktyg");
@@ -42,22 +41,15 @@ public class GroupService {
         persistGroup();
     }
 
-    public void getUsersForGroup(UserGroup ug) {
-        this.userGroup = ug;
-        findUsers();
-    }
-
     public void persistGroup(){
         System.out.println(userGroup);
         em.getTransaction().begin();
         em.persist(userGroup);
         em.getTransaction().commit();
-        //findUsers();
     }
 
-    public String findUsers() {
+    public String getUsers() {
         String s = "USERSFORGROUP";
-        em.getTransaction().begin();
         TypedQuery<User> query =
                 em.createQuery("SELECT c FROM User c", User.class);
 
@@ -66,7 +58,19 @@ public class GroupService {
         for (User u : users) {
             s += "#" + u.getFirstName();
         }
-        em.getTransaction().commit();
+        return s;
+    }
+
+    public String getGroups() {
+        String s = "GETGROUPS";
+        TypedQuery<UserGroup> query =
+                em.createQuery("SELECT c FROM UserGroup c", UserGroup.class);
+
+        List<UserGroup> groups = query.getResultList();
+
+        for (UserGroup u : groups) {
+            s += "#" + u.getGroupName();
+        }
         return s;
     }
 

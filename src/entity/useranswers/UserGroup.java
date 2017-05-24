@@ -16,8 +16,8 @@ import java.util.List;
  */
 
 @Entity
-@NamedQuery(name="UserGroup.findByName",
-        query="SELECT c FROM User c WHERE c.firstName = :firstname")
+/*@NamedQuery(name="UserGroup.findByName",
+        query="SELECT c FROM User c WHERE c.firstName = :firstname")*/
 public class UserGroup {
 
     @Id
@@ -26,8 +26,6 @@ public class UserGroup {
 
     @Column
     private String groupName;
-
-    /*private List groupList;*/
 
     public UserGroup(String gn){
         this();
@@ -38,7 +36,6 @@ public class UserGroup {
     public UserGroup(){
         groupId = 0;
         groupName = "";
-        /*groupList = new IndirectList();*/
     }
 
     public void setGroupId(int gi) {
