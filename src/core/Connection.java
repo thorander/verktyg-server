@@ -1,5 +1,6 @@
 package core;
 
+import com.sun.xml.internal.stream.Entity;
 import entity.Answer;
 import entity.Question;
 import entity.Test;
@@ -21,7 +22,7 @@ import java.util.List;
 public class Connection extends Thread{
 
     private User user;
-    private List users;
+    private String users;
     private Socket socket;
     private PrintWriter out;
     private BufferedReader in;
@@ -42,6 +43,10 @@ public class Connection extends Thread{
         us = new UserService();
         ts = new TestService();
         gs = new GroupService();
+    }
+
+    public Connection() {
+
     }
 
     public void run(){
@@ -129,34 +134,15 @@ public class Connection extends Thread{
                 break;
 
             case "CREATEGROUP":
-                /*ug = new UserGroup();
-                users = new ArrayList<User>();
-                ug.setGroupName(split[1]);
-                ug.setUsers(users);
-                GroupService gs = new GroupService();
-                gs.setUg(ug);
-                gs.persistGroup();*/
                 ug = new UserGroup(split[1]);
                 gs.createGroup(ug);
+                out.println(gs.findUsers());
                 break;
-            case "ADDGROUP":
-                TypedQuery<UserGroup> groupByName = gs.getEm().createNamedQuery("UserGroup.findAll", UserGroup.class);
-                //List<UserGroup> results = groupByName.getResultList();
-                try{
-                    ug = groupByName.setParameter("groupname", split[1]).getSingleResult();
-                    System.out.println(ug.getGroupName());
-                    out.println("ADDGROUP#" + ug.getGroupName());
-                    usergroup = ug;
-                } catch (NoResultException e){
-                    out.println("ERROR#No group registered.");
-                }
+            case "GETUSERSFORGROUP#":
+                ug = new UserGroup(split[1]);
+                gs.getUsersForGroup(ug);
                 break;
-            case "ADDUSER":
-              /*  for (int x = 0; x < split.length; x++){
-                    if (split[0].equals("ADDUSER")){
-                        ug = new UserGroup();
-                        ug.setUsers(users);
-                }}*/
+            case "USERSFORGROUP":
                 break;
             case "PERSISTTEST":
                 ts.persistTest();
@@ -189,5 +175,14 @@ public class Connection extends Thread{
                 }
         }
     }
+
+    /*public void setUser(String u) {
+        this.users = u;
+
+        if(!users.equals("")){
+            out.println(users);
+        }
+        //System.out.println(users);
+    }*/
 
 }

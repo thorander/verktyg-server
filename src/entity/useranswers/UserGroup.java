@@ -16,8 +16,8 @@ import java.util.List;
  */
 
 @Entity
-@NamedQuery(name="UserGroup.findAll",
-        query="SELECT c FROM UserGroup c WHERE c.groupName = :groupname")
+@NamedQuery(name="UserGroup.findByName",
+        query="SELECT c FROM User c WHERE c.firstName = :firstname")
 public class UserGroup {
 
     @Id
@@ -32,6 +32,7 @@ public class UserGroup {
     public UserGroup(String gn){
         this();
         this.groupName = gn;
+
     }
 
     public UserGroup(){
@@ -63,5 +64,6 @@ public class UserGroup {
     public List getGroupList(){
         return groupList;
     }*/
+
 
 }

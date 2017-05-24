@@ -1,21 +1,28 @@
 package service;
 
+import core.Connection;
 import entity.Test;
+import entity.User;
 import entity.useranswers.UserGroup;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by phili on 2017-05-18.
  */
+
+
 public class GroupService {
 
     EntityManagerFactory emf;
     EntityManager em;
 
     private UserGroup userGroup;
+    private User user;
+    private Connection connection;
 
     public GroupService(){
         emf = Persistence.createEntityManagerFactory("JPAVerktyg");
@@ -30,15 +37,36 @@ public class GroupService {
         return userGroup;
     }
 
+    public void createGroup(UserGroup ug){
+        this.userGroup = ug;
+        persistGroup();
+    }
+
+    public void getUsersForGroup(UserGroup ug) {
+        this.userGroup = ug;
+
+    }
+
     public void persistGroup(){
         em.getTransaction().begin();
         em.persist(userGroup);
         em.getTransaction().commit();
+        //findUsers();
     }
 
-    public void createGroup(UserGroup ug){
-        this.userGroup = ug;
-        persistGroup();
+    public String findUsers() {
+        String s = "USERSFORGROUP";
+        em.getTransaction().begin();
+        TypedQuery<User> query =
+                em.createQuery("SELECT c FROM User c", User.class);
+
+        List<User> users = query.getResultList();
+
+        for (User u : users) {
+            s += "#" + u.getFirstName();
+        }
+        em.getTransaction().commit();
+        return s;
     }
 
     public EntityManager getEm(){
