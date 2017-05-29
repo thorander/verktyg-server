@@ -200,7 +200,8 @@ public class Connection extends Thread{
                 us.createUser(user);
                 user.addTakenTest(uts.getTest());
                 break;
-
+            case "GETTEST":
+                out.println(gs.getGroups());
         }
     }
 
