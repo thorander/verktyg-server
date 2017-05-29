@@ -2,6 +2,7 @@ package entity.useranswers;
 
 import core.Connection;
 import core.Main;
+import entity.Question;
 import entity.User;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
@@ -27,19 +28,18 @@ public class UserGroup {
     @Column
     private String groupName;
 
-    @Column
-    private String selectedUsers;
+    @OneToMany(targetEntity = User.class)
+    private List users;
 
-    public UserGroup(String gn, String us){
+    public UserGroup(String gn){
         this();
         this.groupName = gn;
-        this.selectedUsers = us;
+        users = new IndirectList();
     }
 
     public UserGroup(){
         groupId = 0;
         groupName = "";
-        selectedUsers = "";
     }
 
     public void setGroupId(int gi) {
@@ -58,22 +58,8 @@ public class UserGroup {
         return groupName;
     }
 
-    public String getSelectedUsers() {
-     /*   if (selectedUsers.contains(",")) {
-            selectedUsers.split(",");
-        } else {
-            throw new IllegalArgumentException("String " + selectedUsers + " does not contain -");
-        }*/
-        return selectedUsers;
+    public void addUser(User u){
+        users.add(u);
     }
 
-   /* public void setGroupList(List gn) {
-        groupList.add(gn);
-    }
-
-    public List getGroupList(){
-        return groupList;
-    }
-
-*/
 }

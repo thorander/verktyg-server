@@ -187,11 +187,30 @@ public class Connection extends Thread{
                 break;
 
             case "CREATEGROUP":
-                ug = new UserGroup(split[1], split[2]);
+                ug = new UserGroup(split[1]);
+                for(int j = 2; j < split.length;){
+                    TypedQuery<User> userById = us.getEm().createNamedQuery("User.findById", User.class);
+                    try{
+                        ug.addUser(userById.setParameter("uid", Integer.parseInt(split[j++])).getSingleResult());
+                    } catch (NoResultException e){
+                        System.out.println("No user was found with that ID");
+                    }
+                }
                 gs.createGroup(ug);
                 break;
             case "GETUSERSFORGROUP":
-                out.println(gs.getUsers());
+                TypedQuery<User> getStudents = us.getEm().createNamedQuery("User.getStudents", User.class);
+                try {
+                    ObservableList<User> allStudents = FXCollections.observableArrayList(getStudents.getResultList());//Sparar data i arraylist
+                    String tests = "STUDENTSFORGROUP#";
+                    for (i = 0; i < allStudents.size(); i++) {
+                        tests += allStudents.get(i).getFirstName() + " " + allStudents.get(i).getLastName()
+                                + "@" + allStudents.get(i).getUid();
+                    }
+                    out.println(tests);//Skickar Sträng med data
+                } catch (Exception e){
+                    System.out.println("Couldn't get users for groups...");
+                }
                 break;
             case "GETGROUPS":
                 out.println(gs.getGroups());

@@ -11,7 +11,8 @@ import java.util.stream.Collectors;
 @Entity
 @NamedQueries({@NamedQuery(name ="User.getStudents", query="SELECT c FROM User c WHERE   c.role = '" + "student" + "'"),
 @NamedQuery(name="User.findByName",
-        query="SELECT c FROM User c WHERE c.username = :username")})
+        query="SELECT c FROM User c WHERE c.username = :username"),
+@NamedQuery(name="User.findById", query="SELECT c FROM User c WHERE c.uid = :uid")})
 @Table
 public class User {
     @Id
