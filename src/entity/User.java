@@ -8,8 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@NamedQueries({@NamedQuery(name ="User.getStudents", query="SELECT c FROM User c WHERE   c.role = '" + "student" + "'"),
 @NamedQuery(name="User.findByName",
-        query="SELECT c FROM User c WHERE c.username = :username")
+        query="SELECT c FROM User c WHERE c.username = :username")})
 @Table
 public class User {
     @Id
