@@ -119,15 +119,31 @@ public class Connection extends Thread{
                 test.setCreator(user);
                 ts.setTest(test);
                 break;
+            case "GETUTEST":
+                TypedQuery<UTest> getAllUTest = ts.getEm().createNamedQuery("UTest.selectAll", UTest.class);
+                try {
+                    ObservableList<UTest> allUTest = FXCollections.observableArrayList(getAllUTest.getResultList());//Sparar data i arraylist
+                    String tests = "GETUTEST#";
+                    for (int i = 0; i <allUTest.size(); i++) {
+                        tests += allUTest.get(i).getTestAnswered().getTitle() + "@" + allUTest.get(i).getTestAnswered().getTestId()
+                                + "@";
+                    }
+                    System.out.println(tests);
+                    out.println(tests);//Skickar Sträng med data
+                }
+                catch(NoResultException e){}
+                break;
+
             case "GETSTUDENTS":
                 TypedQuery<User> getAllStudents = us.getEm().createNamedQuery("User.getStudents", User.class);
                 try {
                     ObservableList<User> allStudents = FXCollections.observableArrayList(getAllStudents.getResultList());//Sparar data i arraylist
-                    String tests = "GETSTUDENTS# ";
+                    String tests = "GETSTUDENTS#";
                     for (int i = 0; i < allStudents.size(); i++) {
                         tests += allStudents.get(i).getFirstName() + " " + allStudents.get(i).getLastName()
                                 + "@" + allStudents.get(i).getUid() + "@";
                     }
+                    System.out.println(tests);
                     out.println(tests);//Skickar Sträng med data
                 }
                 catch(NoResultException e){}

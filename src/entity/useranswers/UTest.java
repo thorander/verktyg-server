@@ -10,6 +10,8 @@ import java.util.List;
 
 
 @Entity
+@NamedQuery (name="UTest.selectAll",
+        query="SELECT t FROM UTest t")
 public class UTest {
 
     @Id
