@@ -1,15 +1,20 @@
 package core;
 
+import com.sun.xml.internal.stream.Entity;
 import entity.Answer;
 import entity.Question;
 import entity.Test;
 import entity.User;
+import entity.useranswers.UAnswer;
+import entity.useranswers.UQuestion;
+import entity.useranswers.UTest;
 import entity.useranswers.UserGroup;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import service.GroupService;
 import service.TestService;
+import service.UTestService;
 import service.UserService;
 
 import javax.jws.soap.SOAPBinding;
@@ -24,7 +29,7 @@ import java.util.List;
 public class Connection extends Thread{
 
     private User user;
-    private List users;
+    private String users;
     private Socket socket;
     private PrintWriter out;
     private BufferedReader in;
@@ -33,6 +38,7 @@ public class Connection extends Thread{
 
     private UserService us;
     private TestService ts;
+    private UTestService uts;
 
     private GroupService gs;
     private UserGroup usergroup;
@@ -46,6 +52,11 @@ public class Connection extends Thread{
         us = new UserService();
         ts = new TestService();
         gs = new GroupService();
+        uts = new UTestService();
+    }
+
+    public Connection() {
+
     }
 
     public void run(){
@@ -104,7 +115,7 @@ public class Connection extends Thread{
                 break;
             case "CREATETEST":
                 System.out.println("Array length: " + split.length);
-                Test test = new Test(split[1], split[2], split[3], split[4], split[5]);
+                Test test = new Test(split[1], split[2], split[3], split[4], split[5], split[6], split[7], split[8]);
                 test.setCreator(user);
                 ts.setTest(test);
                 break;
@@ -131,7 +142,7 @@ public class Connection extends Thread{
                 int i = 0;
                 while(i < split.length){
                     if(split[i].equals("QUESTION")){
-                        Question q = new Question(split[++i], split[++i], ts.getTest());
+                        Question q = new Question(split[++i], split[++i], ts.getTest(), Integer.parseInt(split[++i]));
                         while(i + 1 < split.length){
                             if(split[++i].equals("ANSWER")){
                                 Answer a = new Answer(split[++i], split[++i].equals("true") ? true : false, q, Integer.parseInt(split[++i]));
@@ -147,34 +158,14 @@ public class Connection extends Thread{
                 break;
 
             case "CREATEGROUP":
-                /*ug = new UserGroup();
-                users = new ArrayList<User>();
-                ug.setGroupName(split[1]);
-                ug.setUsers(users);
-                GroupService gs = new GroupService();
-                gs.setUg(ug);
-                gs.persistGroup();*/
-                ug = new UserGroup(split[1]);
+                ug = new UserGroup(split[1], split[2]);
                 gs.createGroup(ug);
                 break;
-            case "ADDGROUP":
-                TypedQuery<UserGroup> groupByName = gs.getEm().createNamedQuery("UserGroup.findAll", UserGroup.class);
-                //List<UserGroup> results = groupByName.getResultList();
-                try{
-                    ug = groupByName.setParameter("groupname", split[1]).getSingleResult();
-                    System.out.println(ug.getGroupName());
-                    out.println("ADDGROUP#" + ug.getGroupName());
-                    usergroup = ug;
-                } catch (NoResultException e){
-                    out.println("ERROR#No group registered.");
-                }
+            case "GETUSERSFORGROUP":
+                out.println(gs.getUsers());
                 break;
-            case "ADDUSER":
-              /*  for (int x = 0; x < split.length; x++){
-                    if (split[0].equals("ADDUSER")){
-                        ug = new UserGroup();
-                        ug.setUsers(users);
-                }}*/
+            case "GETGROUPS":
+                out.println(gs.getGroups());
                 break;
             case "PERSISTTEST":
                 ts.persistTest();
@@ -189,9 +180,8 @@ public class Connection extends Thread{
                 }
                 break;
             case "FETCHTESTBYID":
-                TypedQuery<Test> testById = ts.getEm().createNamedQuery("Test.findById", Test.class);
                 try{
-                    Test testFromId = testById.setParameter("testId", Integer.parseInt(split[1])).getSingleResult();
+                    Test testFromId = ts.getTestFromId(Integer.parseInt(split[1]));
                     System.out.println(testFromId.getTitle());
                     out.println("TAKETEST#"
                                 + testFromId.getTitle() + "#"
@@ -205,7 +195,40 @@ public class Connection extends Thread{
                 } catch (NoResultException e){
                     out.println("ERROR#No such test. This shouldn't happen.");
                 }
+                break;
+            case "ADDTAKENTEST":
+                Test originalTest = ts.getTestFromId(Integer.parseInt(split[1]));
+                UTest utest = new UTest(originalTest, Integer.parseInt(split[2]));
+                uts.setTest(utest);
+                break;
+            case "ADDUSERQUESTION":
+                TypedQuery<Question> query = uts.getEm().createNamedQuery("Question.findById", Question.class);
+                Question resultQuestion = query.setParameter("id", Integer.parseInt(split[1])).getSingleResult();
+                UQuestion uQuestion = new UQuestion(resultQuestion);
+                for(int j = 2; j < split.length; j++){
+                    TypedQuery<Answer> answerQuery = uts.getEm().createNamedQuery("Answer.findById", Answer.class);
+                    Answer resultAnswer = answerQuery.setParameter("id", Integer.parseInt(split[j++])).getSingleResult();
+                    UAnswer uAnswer = new UAnswer(resultAnswer, Integer.parseInt(split[j++]), split[j++], split[j].equals("true") ? true : false);
+                    uQuestion.getUserAnswers().add(uAnswer);
+                }
+                uts.addQuestion(uQuestion);
+                break;
+            case "PERSISTTAKENTEST":
+                uts.persistTest();
+                us.createUser(user);
+                user.addTakenTest(uts.getTest());
+                break;
+
         }
     }
+
+    /*public void setUser(String u) {
+        this.users = u;
+
+        if(!users.equals("")){
+            out.println(users);
+        }
+        //System.out.println(users);
+    }*/
 
 }

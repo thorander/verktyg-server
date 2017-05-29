@@ -16,8 +16,8 @@ import java.util.List;
  */
 
 @Entity
-@NamedQuery(name="UserGroup.findAll",
-        query="SELECT c FROM UserGroup c WHERE c.groupName = :groupname")
+/*@NamedQuery(name="UserGroup.findByName",
+        query="SELECT c FROM User c WHERE c.firstName = :firstname")*/
 public class UserGroup {
 
     @Id
@@ -27,17 +27,18 @@ public class UserGroup {
     @Column
     private String groupName;
 
-    /*private List groupList;*/
+    private String selectedUsers;
 
-    public UserGroup(String gn){
+    public UserGroup(String gn, String us){
         this();
         this.groupName = gn;
+        this.selectedUsers = us;
     }
 
     public UserGroup(){
         groupId = 0;
         groupName = "";
-        /*groupList = new IndirectList();*/
+        selectedUsers = "";
     }
 
     public void setGroupId(int gi) {
@@ -56,6 +57,14 @@ public class UserGroup {
         return groupName;
     }
 
+    public String getSelectedUsers() {
+        /*if (selectedUsers.contains(",")) {
+        } else {
+            throw new IllegalArgumentException("String " + selectedUsers + " does not contain -");
+        }*/
+        return selectedUsers;
+    }
+
     /*public void setGroupList(List gn) {
         groupList.add(gn);
     }
@@ -63,5 +72,6 @@ public class UserGroup {
     public List getGroupList(){
         return groupList;
     }*/
+
 
 }

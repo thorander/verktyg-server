@@ -7,6 +7,7 @@ import entity.User;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 
 /**
  * Created by Matilda on 2017-05-10.
@@ -48,5 +49,11 @@ public class TestService {
 
     public EntityManager getEm(){
         return em;
+    }
+
+    public Test getTestFromId(int id){
+        TypedQuery<Test> testById = em.createNamedQuery("Test.findById", Test.class);
+        Test testFromId = testById.setParameter("testId", id).getSingleResult();
+        return testFromId;
     }
 }

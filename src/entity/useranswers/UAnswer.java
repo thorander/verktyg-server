@@ -12,19 +12,29 @@ public class UAnswer {
     private int UAnswerId;
     @OneToOne
     private Answer answer;
-    private boolean correctAnswer;
     private int answerOrder;
+
+    private boolean checked;
+
+    private String answerText;
 
     public UAnswer() {
 
     }
 
 
-    public UAnswer(Answer answer, boolean correctAnswer) {
+    public UAnswer(Answer answer, int answerOrder, String answerText) {
 
         this.answer = answer;
-        this.correctAnswer = correctAnswer;
+        this.answerOrder = answerOrder;
+        this.answerText = answerText;
+        checked = false;
 
+    }
+
+    public UAnswer(Answer answer, int answerOrder, String answerText, boolean checked){
+        this(answer, answerOrder, answerText);
+        this.checked = checked;
     }
 
     public void setUAnswerId(int UAnswerId) {
@@ -35,19 +45,19 @@ public class UAnswer {
         this.answer = answer;
     }
 
-    public void setCorrectAnswer(boolean correctAnswer) {
-        this.correctAnswer = correctAnswer;
-    }
-
-    public boolean isCorrectAnswer() {
-        return correctAnswer;
-    }
-
     public Answer getAnswer() {
         return answer;
     }
 
     public int getUAnswerId() {
         return UAnswerId;
+    }
+
+    public int getAnswerOrder(){
+        return answerOrder;
+    }
+
+    public boolean isChecked(){
+        return checked;
     }
 }

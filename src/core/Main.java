@@ -43,12 +43,23 @@ public class Main extends Application {
         //We create a test
         Test t = new Test("ESC2017");
         t.setCreator(markus);
-        Question q1 = new Question("Var hålls Eurovision Song Contest i år?", "One choice", t);
+
+        Question q1 = new Question("Var hålls Eurovision Song Contest i år?", "One choice", t, 1);
         Answer a1q1 = new Answer("Kiev", true, q1, 1);
         Answer a2q1 = new Answer("Stockholm", false, q1, 2);
         q1.addAnswer(a1q1);
         q1.addAnswer(a2q1);
+
+        Question q2 = new Question("Rangordna dessa", "Order", t, 2);
+        Answer a1q2 = new Answer("Tre", false, q2, 3);
+        Answer a2q2 = new Answer("Ett", false, q2, 1);
+        Answer a3q2 = new Answer("Två", false, q2, 2);
+        q2.addAnswer(a1q2);
+        q2.addAnswer(a2q2);
+        q2.addAnswer(a3q2);
+
         t.addQuestion(q1);
+        t.addQuestion(q2);
 
         t.setCreator(philip);
 

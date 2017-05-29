@@ -25,12 +25,9 @@ public class UQuestion {
 
     }
 
-    public UQuestion(Question question, int UQuestionId) {
-        this.UQuestionId = UQuestionId;
+    public UQuestion(Question question) {
         this.question = question;
         this.userAnswers = new ArrayList<UAnswer>();
-
-
     }
 
     public Question getQuestion() {
@@ -55,6 +52,14 @@ public class UQuestion {
 
     public List getUserAnswers() {
         return userAnswers;
+    }
+
+    public void setScore(int score){
+        this.score = score;
+    }
+
+    public int getScore(){
+        return score;
     }
 
 

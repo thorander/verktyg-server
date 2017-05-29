@@ -6,6 +6,8 @@ import java.util.List;
 
 @Entity
 @Table
+@NamedQuery(name="Question.findById",
+        query="SELECT c FROM Question c WHERE c.id = :id")
 public class Question {
 
     @Id
@@ -23,12 +25,13 @@ public class Question {
     @OneToOne
     private Test test;
 
-    public Question(String question, String questionType, Test test) {
+    public Question(String question, String questionType, Test test, int score) {
         super();
         this.question = question;
         this.test = test;
         answers = new ArrayList<Answer>();
         this.questionType = questionType;
+        this.score = score;
     }
 
     public Question() {
@@ -57,6 +60,8 @@ public class Question {
     public void setQuestionType(String questionType){this.questionType = questionType;}
 
     public String getQuestionType(){return questionType;}
+
+    public int getScore(){return score;}
 
     public String getSendData(){
         String s = "ADDTQUESTION#";
