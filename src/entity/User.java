@@ -6,6 +6,7 @@ import org.eclipse.persistence.indirection.IndirectList;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @NamedQueries({@NamedQuery(name ="User.getStudents", query="SELECT c FROM User c WHERE   c.role = '" + "student" + "'"),
@@ -91,7 +92,14 @@ public class User {
         testsToTake.add(t);
     }
 
-    public void removeTestToTake(Test t) { testsToTake.remove(t); }
+    public void removeTestToTake(Test t) {
+        for(Object test : testsToTake){
+            if(((Test)test).getTestId() == t.getTestId()){
+                testsToTake.remove(((Test)test));
+                return;
+            }
+        }
+    }
 
     public void addTakenTest(UTest t) { takenTests.add(t);}
 
