@@ -9,8 +9,10 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Entity
+@NamedQueries({ @NamedQuery (name="Test.selectAll",
+query="SELECT t FROM Test t"),
 @NamedQuery(name="Test.findById",
-        query="SELECT c FROM Test c WHERE c.testId = :testId")
+        query="SELECT c FROM Test c WHERE c.testId = :testId")})
 public class Test {
 
     @OneToMany(targetEntity = Question.class, cascade = CascadeType.PERSIST)
