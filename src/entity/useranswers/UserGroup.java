@@ -27,6 +27,7 @@ public class UserGroup {
     @Column
     private String groupName;
 
+    @Column
     private String selectedUsers;
 
     public UserGroup(String gn, String us){
@@ -58,20 +59,21 @@ public class UserGroup {
     }
 
     public String getSelectedUsers() {
-        /*if (selectedUsers.contains(",")) {
+     /*   if (selectedUsers.contains(",")) {
+            selectedUsers.split(",");
         } else {
             throw new IllegalArgumentException("String " + selectedUsers + " does not contain -");
         }*/
         return selectedUsers;
     }
 
-    /*public void setGroupList(List gn) {
+   /* public void setGroupList(List gn) {
         groupList.add(gn);
     }
 
     public List getGroupList(){
         return groupList;
-    }*/
+    }
 
-
+*/
 }

@@ -42,7 +42,7 @@ public class GroupService {
     }
 
     public void persistGroup(){
-        System.out.println(userGroup);
+        System.out.println(userGroup.toString());
         em.getTransaction().begin();
         em.persist(userGroup);
         em.getTransaction().commit();

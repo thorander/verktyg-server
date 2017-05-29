@@ -9,6 +9,9 @@ import entity.useranswers.UAnswer;
 import entity.useranswers.UQuestion;
 import entity.useranswers.UTest;
 import entity.useranswers.UserGroup;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 import service.GroupService;
 import service.TestService;
 import service.UTestService;
@@ -41,6 +44,7 @@ public class Connection extends Thread{
     private UserGroup usergroup;
 
     private Question question;
+
 
     public Connection(Socket socket, User user){
         this.socket = socket;
@@ -115,6 +119,20 @@ public class Connection extends Thread{
                 test.setCreator(user);
                 ts.setTest(test);
                 break;
+            case "ALLTESTS":
+                TypedQuery<Test> getAllTests = ts.getEm().createNamedQuery("Test.selectAll", Test.class);//Hämtar data från databasen
+            try {
+                ObservableList<Test> allTests = FXCollections.observableArrayList(getAllTests.getResultList());//Sparar data i arraylist
+                String tests = "ALLTESTS# ";
+                for (int i = 0; i < allTests.size(); i++) {
+                    tests += allTests.get(i).getTitle() + "#" + allTests.get(i).getTestId() + "#";
+                }
+                out.println(tests);//Skickar Sträng med data
+            }
+                catch(NoResultException nre){
+                System.out.println("Oj då");
+                }
+               break;
             case "QUESTION":
                 if(Main.DEBUG){
                     for(int i = 0; i < split.length; i++){
@@ -200,7 +218,8 @@ public class Connection extends Thread{
                 us.createUser(user);
                 user.addTakenTest(uts.getTest());
                 break;
-
+            case "GETTEST":
+                out.println(gs.getGroups());
         }
     }
 
