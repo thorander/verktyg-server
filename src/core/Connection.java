@@ -123,7 +123,7 @@ public class Connection extends Thread{
                 TypedQuery<User> getAllStudents = us.getEm().createNamedQuery("User.getStudents", User.class);
                 try {
                     ObservableList<User> allStudents = FXCollections.observableArrayList(getAllStudents.getResultList());//Sparar data i arraylist
-                    String tests = "ALLTESTS# ";
+                    String tests = "GETSTUDENTS# ";
                     for (int i = 0; i < allStudents.size(); i++) {
                         tests += allStudents.get(i).getFirstName() + " " + allStudents.get(i).getLastName()
                                 + "@" + allStudents.get(i).getUid() + "@";
