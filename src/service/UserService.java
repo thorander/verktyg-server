@@ -21,6 +21,7 @@ public class UserService {
     public void createUser(User user){
         em.getTransaction().begin();
         em.persist(user);
+        em.flush();
         em.getTransaction().commit();
     }
 

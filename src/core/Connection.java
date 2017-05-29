@@ -215,8 +215,9 @@ public class Connection extends Thread{
                 break;
             case "PERSISTTAKENTEST":
                 uts.persistTest();
-                us.createUser(user);
                 user.addTakenTest(uts.getTest());
+                user.removeTestToTake(uts.getTest().getTestAnswered());
+                us.createUser(user);
                 break;
             case "GETTEST":
                 out.println(gs.getGroups());

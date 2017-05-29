@@ -61,6 +61,8 @@ public class Main extends Application {
         t.addQuestion(q1);
         t.addQuestion(q2);
 
+        t.setMaxPoints(3);
+
         t.setCreator(philip);
 
         //Add to the user which tests are available for them
