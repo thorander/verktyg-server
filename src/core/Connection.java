@@ -140,7 +140,7 @@ public class Connection extends Thread{
                 break;
 
             case "CREATEGROUP":
-                ug = new UserGroup(split[1]);
+                ug = new UserGroup(split[1], split[2]);
                 gs.createGroup(ug);
                 break;
             case "GETUSERSFORGROUP":

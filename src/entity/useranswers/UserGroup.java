@@ -27,15 +27,18 @@ public class UserGroup {
     @Column
     private String groupName;
 
-    public UserGroup(String gn){
+    private String selectedUsers;
+
+    public UserGroup(String gn, String us){
         this();
         this.groupName = gn;
-
+        this.selectedUsers = us;
     }
 
     public UserGroup(){
         groupId = 0;
         groupName = "";
+        selectedUsers = "";
     }
 
     public void setGroupId(int gi) {
@@ -52,6 +55,14 @@ public class UserGroup {
 
     public String getGroupName(){
         return groupName;
+    }
+
+    public String getSelectedUsers() {
+        /*if (selectedUsers.contains(",")) {
+        } else {
+            throw new IllegalArgumentException("String " + selectedUsers + " does not contain -");
+        }*/
+        return selectedUsers;
     }
 
     /*public void setGroupList(List gn) {
