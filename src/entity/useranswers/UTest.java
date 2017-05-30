@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @NamedQuery (name="UTest.selectAll",
-        query="SELECT t FROM UTest t")
+        query="SELECT t FROM UTest t WHERE t.corrected = true ")
 public class UTest {
 
     @Id
