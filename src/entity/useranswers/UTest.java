@@ -10,8 +10,15 @@ import java.util.List;
 
 
 @Entity
-@NamedQuery (name="UTest.selectAll",
-        query="SELECT t FROM UTest t WHERE t.corrected = true ")
+@NamedQueries({
+        @NamedQuery(name = "UTest.selectAll",
+                query = "SELECT t FROM UTest t WHERE t.corrected = true "),
+        @NamedQuery(name = "UTest.findByGroupAndTest",
+                query = "SELECT t FROM UTest t, User u, UserGroup ug, Test test WHERE " +
+                        "t.corrected = true AND t.testAnswered.testId = :testId " +
+                        "AND t IN (u.takenTests) AND u IN (ug.users) AND ug.groupId = :groupId")
+})
+
 public class UTest {
 
     @Id

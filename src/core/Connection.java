@@ -270,6 +270,7 @@ public class Connection extends Thread{
             case "GETTEST":
                 out.println(gs.getGroups());
                 break;
+
             case "GETUSERSFORPDF":
                 TypedQuery<User> userQuery = us.getEm().createNamedQuery("User.findUserByUTest", User.class);
                 try{
@@ -277,6 +278,21 @@ public class Connection extends Thread{
                     String output = "GETUSERSFORPDF#";
                     for(User pdfUser : users){
                         output += pdfUser.getFirstName() + " " + pdfUser.getLastName() + "@" + pdfUser.getUid() + "@";
+                    }
+                    out.println(output);
+                } catch (NoResultException e){
+                    System.out.println(e);
+                }
+                break;
+
+            case "GetInfoStatistic":
+                TypedQuery<UTest> statistic = us.getEm().createNamedQuery("UTest.findByGroupAndTest", UTest.class);
+                try{
+                    statistic.setParameter("groupId", split[2]);
+                    ArrayList<UTest> users = new ArrayList<>(statistic.setParameter("testId", Integer.parseInt(split[1])).getResultList());
+                    String output = "GETUSERSFORPDF#";
+                    for(UTest UTestS : users){
+                        output += UTestS.getGrade() + "@" + UTestS.getScore() + "@";
                     }
                     out.println(output);
                 } catch (NoResultException e){
