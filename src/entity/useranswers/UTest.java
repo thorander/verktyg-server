@@ -96,4 +96,6 @@ public class UTest {
     public List getQuestions(){
         return questions;
     }
+
+    public int getUTestId(){return UTestId;}
 }

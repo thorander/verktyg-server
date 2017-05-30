@@ -27,7 +27,8 @@ public class Main extends Application {
         Server server = new Server(4436);
         server.start();
 
-        persistTestData();
+
+        //persistTestData();
     }
 
     private static void persistTestData(){
@@ -35,7 +36,7 @@ public class Main extends Application {
         EntityManager em = emf.createEntityManager();
 
         //Create users here
-        User markus = new User("Markus", "Gustafsson", "mackan", "1234", "admin");
+        User markus = new User("Markus", "Gustafsson", "mackan@bbb.se", "1234", "admin");
         User teacher = new User("Teacher", "Teacherson", "teacher", "1234", "teacher");
         User student = new User("Student", "Studentson", "student", "1234", "student");
         User philip = new User("Philip", "Persson", "chulle","123","admin");

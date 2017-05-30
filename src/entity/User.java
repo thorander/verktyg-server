@@ -10,10 +10,10 @@ import java.util.stream.Collectors;
 
 @Entity
 @NamedQueries({@NamedQuery(name ="User.getStudents", query="SELECT c FROM User c WHERE   c.role = '" + "student" + "'"),
-@NamedQuery(name="User.findByName",
-        query="SELECT c FROM User c WHERE c.username = :username"),
-/*@NamedQuery(name="User.findUserByUTest",
-query = "SELECT p FROM User p WHERE p.uid TEST_USER") */
+@NamedQuery(name="User.findByMail",
+        query="SELECT c FROM User c WHERE c.email = :email"),
+        @NamedQuery(name="User.findUserByUTest",
+query = "SELECT p FROM User p, UTest u WHERE u IN (p.takenTests) AND u.testAnswered.testId = :testId "),
 @NamedQuery(name="User.findById", query="SELECT c FROM User c WHERE c.uid = :uid")})
 @Table
 public class User {
@@ -24,7 +24,7 @@ public class User {
     private String lastName;
     private String role;
     @Column(unique = true)
-    private String username;
+    private String email;
     private String password;
 
     @OneToMany(targetEntity = Test.class)
@@ -40,11 +40,11 @@ public class User {
         this.role = role;
     }
 
-    public User(String firstName, String lastName, String username, String password, String role){
+    public User(String firstName, String lastName, String email, String password, String role){
         this();
         this.firstName = firstName;
         this.lastName = lastName;
-        this.username = username;
+        this.email = email;
         this.password = password;
         this.role = role;
     }
@@ -79,9 +79,9 @@ public class User {
         this.lastName = fname;
     }
 
-    public String getUsername() { return username;}
+    public String getEmail() { return email;}
 
-    public void setUsername(String username){this.username = username;}
+    public void setEmail(String email){this.email = email;}
 
     public String getPassword() {return password;}
 

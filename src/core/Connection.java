@@ -96,9 +96,9 @@ public class Connection extends Thread{
                 out.println("REGSUCCESS#Mhmm");
                 break;
             case "LOGIN":
-                TypedQuery<User> userByUsername = us.getEm().createNamedQuery("User.findByName", User.class);
+                TypedQuery<User> userByUsername = us.getEm().createNamedQuery("User.findByMail", User.class);
                 try{
-                    u = userByUsername.setParameter("username", split[1]).getSingleResult();
+                    u = userByUsername.setParameter("email", split[1]).getSingleResult();
                     if(!u.getPassword().equals(split[2])){
                         out.println("ERROR#Wrong password");
                         return;
@@ -269,6 +269,20 @@ public class Connection extends Thread{
                 break;
             case "GETTEST":
                 out.println(gs.getGroups());
+                break;
+            case "GETUSERSFORPDF":
+                TypedQuery<User> userQuery = us.getEm().createNamedQuery("User.findUserByUTest", User.class);
+                try{
+                    ArrayList<User> users = new ArrayList<>(userQuery.setParameter("testId", Integer.parseInt(split[1])).getResultList());
+                    String output = "ADDUSERSTOPDF#";
+                    for(User pdfUser : users){
+                        output += pdfUser.getFirstName() + " " + pdfUser.getLastName() + "@" + pdfUser.getUid() + "@";
+                    }
+                    out.println(output);
+                } catch (NoResultException e){
+                    System.out.println(e);
+                }
+                break;
         }
     }
 
