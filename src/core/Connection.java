@@ -274,7 +274,7 @@ public class Connection extends Thread{
                 TypedQuery<User> userQuery = us.getEm().createNamedQuery("User.findUserByUTest", User.class);
                 try{
                     ArrayList<User> users = new ArrayList<>(userQuery.setParameter("testId", Integer.parseInt(split[1])).getResultList());
-                    String output = "ADDUSERSTOPDF#";
+                    String output = "GETUSERSFORPDF#";
                     for(User pdfUser : users){
                         output += pdfUser.getFirstName() + " " + pdfUser.getLastName() + "@" + pdfUser.getUid() + "@";
                     }
