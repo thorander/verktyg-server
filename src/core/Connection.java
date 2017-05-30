@@ -138,7 +138,7 @@ public class Connection extends Thread{
                 TypedQuery<User> getAllStudents = us.getEm().createNamedQuery("User.getStudents", User.class);
                 try {
                     ObservableList<User> allStudents = FXCollections.observableArrayList(getAllStudents.getResultList());//Sparar data i arraylist
-                    String tests = "GETSTUDENTS#";
+                    String tests = "GETSTUDENTSTOSHARE#";
                     for (int i = 0; i < allStudents.size(); i++) {
                         tests += allStudents.get(i).getFirstName() + " " + allStudents.get(i).getLastName()
                                 + "@" + allStudents.get(i).getUid() + "@";
@@ -196,6 +196,7 @@ public class Connection extends Thread{
                         System.out.println("No user was found with that ID");
                     }
                 }
+                out.println("SUCCESS#Your group was created successfully");
                 gs.createGroup(ug);
                 break;
             case "GETUSERSFORGROUP":
@@ -205,7 +206,8 @@ public class Connection extends Thread{
                     String tests = "STUDENTSFORGROUP#";
                     for (i = 0; i < allStudents.size(); i++) {
                         tests += allStudents.get(i).getFirstName() + " " + allStudents.get(i).getLastName()
-                                + "@" + allStudents.get(i).getUid();
+                                + "@" + allStudents.get(i).getUid() + "@";
+                        System.out.println("Student: " + allStudents.get(i).getFirstName());
                     }
                     out.println(tests);//Skickar Sträng med data
                 } catch (Exception e){
@@ -262,6 +264,11 @@ public class Connection extends Thread{
                 uts.addQuestion(uQuestion);
                 break;
             case "PERSISTTAKENTEST":
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    System.out.println(e);
+                }
                 uts.persistTest();
                 user.addTakenTest(uts.getTest());
                 user.removeTestToTake(uts.getTest().getTestAnswered());
@@ -299,6 +306,72 @@ public class Connection extends Thread{
                     System.out.println(e);
                 }
                 break;
+            case "GETSTATGROUPSANDTESTS":
+                TypedQuery<Test> testQuery = ts.getEm().createQuery("SELECT t FROM Test t", Test.class);
+                TypedQuery<UserGroup> ugQuery = us.getEm().createQuery("SELECT u FROM UserGroup u", UserGroup.class);
+                try{
+                    String tests = "ADDTESTS";
+                    String groups = "ADDGROUPS";
+                    for(Test te : testQuery.getResultList()){
+                        tests += "#" + te.getTitle() + "#" + te.getTestId();
+                    }
+                    for(UserGroup ugr : ugQuery.getResultList()){
+                        groups += "#" + ugr.getGroupName() + "#" + ugr.getGroupId();
+                    }
+                    out.println(tests);
+                    out.println(groups);
+
+                } catch(NoResultException e){
+                    System.out.println("Found nada, for some reason.");
+                }
+                break;
+            case "GETSTATISTICS":
+                TypedQuery<UTest> statistics = us.getEm().createNamedQuery("UTest.findByGroupAndTest", UTest.class);
+                try{
+                    System.out.println(split[1] + " " + split[2]);
+                    ArrayList<UTest> stattests = new ArrayList<>(statistics.setParameter("testId", Integer.parseInt(split[1])).setParameter("groupId", Integer.parseInt(split[2])).getResultList());
+                    System.out.println(stattests.size());
+                    int g = 0, vg = 0, ig = 0, score = 0;
+                    for(UTest temp : stattests){
+                        score += temp.getScore();
+                        if(temp.getGrade().equalsIgnoreCase("ig")){
+                            ig++;
+                        } else if (temp.getGrade().equalsIgnoreCase("g")){
+                            g++;
+                        } else if (temp.getGrade().equalsIgnoreCase("vg")){
+                            vg++;
+                        }
+                    }
+                    out.println("UPDATESTATS"
+                                + "#" + stattests.size()
+                                + "#" + (g+vg)
+                                + "#" + ((float)score/(float)stattests.size())
+                                + "#" + ig
+                                + "#" + g
+                                + "#" + vg);
+                }catch (NoResultException e){
+                    System.out.println(e);
+                }
+                break;
+            case "SHARETOSTUDENT":
+                TypedQuery<Test> testByIdQuery = ts.getEm().createNamedQuery("Test.findById", Test.class);
+                TypedQuery<User> userByIdQuery = us.getEm().createNamedQuery("User.findById", User.class);
+                System.out.println(input);
+                try{
+                    Test testById = testByIdQuery.setParameter("testId", Integer.parseInt(split[1])).getSingleResult();
+                    User userById = userByIdQuery.setParameter("uid", Integer.parseInt(split[2])).getSingleResult();
+                    System.out.println("I was here");
+                    if(userById.hasNotTaken(testById)){
+                        us.getEm().getTransaction().begin();
+                        userById.addTestToTake(testById);
+                        us.getEm().getTransaction().commit();
+                        out.println("SUCCESS#Test was shared successfully");
+                    }
+
+                } catch (NoResultException e){
+                    System.out.println(e);
+                }
+
         }
     }
 

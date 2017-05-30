@@ -51,7 +51,7 @@ public class GroupService {
     public String getUsers() {
         String s = "USERSFORGROUP";
         TypedQuery<User> query =
-                em.createQuery("SELECT c FROM User c", User.class);
+                em.createQuery("SELECT c FROM User c WHERE c.role = 'student'", User.class);
 
         List<User> users = query.getResultList();
 

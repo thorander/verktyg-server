@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @NamedQuery(name="User.findByMail",
         query="SELECT c FROM User c WHERE c.email = :email"),
         @NamedQuery(name="User.findUserByUTest",
-query = "SELECT p FROM User p, UTest u WHERE u IN (p.takenTests) AND u.testAnswered.testId = :testId "),
+query = "SELECT p FROM User p, UTest u WHERE u MEMBER OF p.takenTests AND u.testAnswered.testId = :testId "),
 @NamedQuery(name="User.findById", query="SELECT c FROM User c WHERE c.uid = :uid")})
 @Table
 public class User {
@@ -121,4 +121,18 @@ public class User {
         return "User [firstName=" + firstName + "]";
     }
 
+    public boolean hasNotTaken(Test testById) {
+        for(Object u : takenTests){
+            if(((UTest)u).getTestAnswered().getTestId() == testById.getTestId()){
+                return false;
+            }
+        }
+
+        for(Object t : testsToTake){
+            if(((Test)t).getTestId() == testById.getTestId()){
+                return false;
+            }
+        }
+        return true;
+    }
 }

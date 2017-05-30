@@ -60,7 +60,8 @@ public class UTestService {
             UQuestion temp = ((UQuestion)q);
             switch(temp.getQuestion().getQuestionType()){
                 case "One choice":
-                   if (((UAnswer)temp.getUserAnswers().get(0)).getAnswer().isCorrect()){
+                    boolean allCorrectSingle = correctMultipleChoice(temp);
+                   if (allCorrectSingle){
                        temp.setScore(temp.getQuestion().getScore());
                        points += temp.getScore();
                    }
