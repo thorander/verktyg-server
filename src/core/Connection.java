@@ -220,6 +220,7 @@ public class Connection extends Thread{
                 us.getEm().getTransaction().begin();
                 user.addTestToTake(ts.getTest());
                 us.getEm().getTransaction().commit();
+                out.println("SUCCESS#Your test was created successfully");
                 break;
             case "GETAVAILABLETESTS":
                 String s = user.getAvailableTests();
@@ -271,6 +272,7 @@ public class Connection extends Thread{
                 user.addTakenTest(uts.getTest());
                 user.removeTestToTake(uts.getTest().getTestAnswered());
                 us.createUser(user);
+                out.println("SUCCESS#You turned in your test successfully");
                 break;
             case "GETTEST":
                 out.println(uts.getUTest());
