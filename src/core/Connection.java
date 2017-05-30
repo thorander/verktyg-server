@@ -276,6 +276,8 @@ public class Connection extends Thread{
                 break;
             case "GETTEST":
                 out.println(uts.getUTest());
+                break;
+            case "TESTLIST":
                 out.println(uts.testList());
                 break;
             case "GETUSERSFORPDF":

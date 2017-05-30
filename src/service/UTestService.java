@@ -114,14 +114,14 @@ public class UTestService {
 
     public String testList() {
 
-        String s = "UTEST#";
+        String s = "GETTESTLIST#";
         TypedQuery<UTest> query =
                 em.createQuery("SELECT c FROM UTest c", UTest.class);
 
         List<UTest> utest = query.getResultList();
 
         for (UTest u : utest) {
-            s += "#" + u.getUTestId() + "#" + u.getTestAnswered().getTitle();
+            s += "#" + u.getTestAnswered().getTitle();
         }
         return s;
     }
@@ -131,7 +131,7 @@ public class UTestService {
         String s = "UTEST#";
         TypedQuery<UTest> query =
                 em.createQuery("SELECT c FROM UTest c WHERE c.UTestId = :id", UTest.class);
-        test = query.setParameter("id", 109).getSingleResult();
+        test = query.setParameter("id", 108).getSingleResult();
 
         s += test.getUTestId() + "#" + test.getTestAnswered().getTitle();
 
