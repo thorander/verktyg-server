@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @NamedQuery(name="User.findByName",
         query="SELECT c FROM User c WHERE c.username = :username"),
 /*@NamedQuery(name="User.findUserByUTest",
-query = "SELECT p FROM User p WHERE p.uid TEST_USER")*/
+query = "SELECT p FROM User p WHERE p.uid TEST_USER") */
 @NamedQuery(name="User.findById", query="SELECT c FROM User c WHERE c.uid = :uid")})
 @Table
 public class User {
