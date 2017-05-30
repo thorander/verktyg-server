@@ -149,4 +149,5 @@ public class Test {
     public void setMaxPoints(int maxPoints){
         this.maxPoints = maxPoints;
     }
+
 }

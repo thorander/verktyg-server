@@ -89,6 +89,7 @@ public class UTestService {
         test.setCorrected(true);
         test.setShowResults(true);
         test.setScore(points);
+        test.setComment("This test was automatically corrected.");
         double percentage = ((double)points) / ((double)test.getTestAnswered().getMaxPoints());
         if(percentage > 0.9){
             test.setGrade("VG");

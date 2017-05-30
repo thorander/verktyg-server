@@ -30,7 +30,7 @@ public class UTest {
 
     private int timeSpent;
     private int score;
-    private String grade;
+    private String grade, comment;
     private boolean corrected;
     private boolean showResults;
 
@@ -47,6 +47,7 @@ public class UTest {
         questions = new IndirectList();
         turnedIn = new Date();
         this.timeSpent = timeSpent;
+        this.comment = "";
     }
 
     public UTest(){}
@@ -105,4 +106,8 @@ public class UTest {
     }
 
     public int getUTestId(){return UTestId;}
+
+    public String getComment(){return comment;}
+
+    public void setComment(String comment){ this.comment = comment;}
 }
