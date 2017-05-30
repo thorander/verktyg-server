@@ -6,10 +6,7 @@ import entity.useranswers.UAnswer;
 import entity.useranswers.UQuestion;
 import entity.useranswers.UTest;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
 
@@ -119,11 +116,13 @@ public class UTestService {
                 em.createQuery("SELECT c FROM UTest c", UTest.class);
 
         List<UTest> utest = query.getResultList();
-
-        for (UTest u : utest) {
-            s += "#" + u.getUTestId() + "#" + u.getTestAnswered().getTitle();
+        if(utest.size() > 0){
+            for (UTest u : utest) {
+                s += "#" + u.getUTestId() + "#" + u.getTestAnswered().getTitle();
+            }
+            return s;
         }
-        return s;
+        return "nothing";
     }
 
     public String getUTest() {
@@ -131,7 +130,12 @@ public class UTestService {
         String s = "UTEST#";
         TypedQuery<UTest> query =
                 em.createQuery("SELECT c FROM UTest c WHERE c.UTestId = :id", UTest.class);
-        test = query.setParameter("id", 109).getSingleResult();
+        try{
+            test = query.setParameter("id", 109).getSingleResult();
+        } catch (NoResultException e){
+            System.out.println(e);
+            return "nothing#";
+        }
 
         s += test.getUTestId() + "#" + test.getTestAnswered().getTitle();
 

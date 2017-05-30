@@ -12,10 +12,7 @@ import entity.useranswers.UserGroup;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
-import service.GroupService;
-import service.TestService;
-import service.UTestService;
-import service.UserService;
+import service.*;
 
 import javax.jws.soap.SOAPBinding;
 import javax.persistence.NoResultException;
@@ -94,6 +91,7 @@ public class Connection extends Thread{
                 u = new User(split[1], split[2], split[3], split[4], split[5]);
                 us.createUser(u);
                 out.println("REGSUCCESS#Mhmm");
+                Mail.sendWelcomeEmail(u.getEmail(), u.getFirstName());
                 break;
             case "LOGIN":
                 TypedQuery<User> userByUsername = us.getEm().createNamedQuery("User.findByMail", User.class);
@@ -366,6 +364,7 @@ public class Connection extends Thread{
                         userById.addTestToTake(testById);
                         us.getEm().getTransaction().commit();
                         out.println("SUCCESS#Test was shared successfully");
+                        Mail.sendNewTestMail(userById.getEmail(), userById.getFirstName());
                     }
 
                 } catch (NoResultException e){
