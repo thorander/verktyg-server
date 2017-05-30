@@ -268,9 +268,9 @@ public class Connection extends Thread{
                 us.createUser(user);
                 break;
             case "GETTEST":
-                out.println(gs.getGroups());
+                out.println(uts.getUTest());
+                out.println(uts.testList());
                 break;
-
             case "GETUSERSFORPDF":
                 TypedQuery<User> userQuery = us.getEm().createNamedQuery("User.findUserByUTest", User.class);
                 try{
