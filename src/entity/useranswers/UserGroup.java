@@ -62,4 +62,8 @@ public class UserGroup {
         users.add(u);
     }
 
+    public List getUsers(){
+        return users;
+    }
+
 }

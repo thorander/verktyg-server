@@ -1,10 +1,7 @@
 package core;
 
 import com.sun.xml.internal.stream.Entity;
-import entity.Answer;
-import entity.Question;
-import entity.Test;
-import entity.User;
+import entity.*;
 import entity.useranswers.UAnswer;
 import entity.useranswers.UQuestion;
 import entity.useranswers.UTest;
@@ -25,8 +22,7 @@ import java.util.List;
 
 public class Connection extends Thread{
 
-    private User user;
-    private String users;
+    private User loggedInUser;
     private Socket socket;
     private PrintWriter out;
     private BufferedReader in;
@@ -38,9 +34,6 @@ public class Connection extends Thread{
     private UTestService uts;
 
     private GroupService gs;
-    private UserGroup usergroup;
-
-    private Question question;
 
     private TypedQuery<Test> testQuery;
     private TypedQuery<UTest> uTestQuery;
@@ -49,11 +42,19 @@ public class Connection extends Thread{
     private TypedQuery<Answer> answerQuery;
     private TypedQuery<UserGroup> userGroupQuery;
 
-
+    private Test test;
+    private Question question;
+    private Answer answer;
+    private UTest uTest;
+    private UQuestion uQuestion;
+    private UAnswer uAnswer;
+    private UserGroup userGroup;
+    private Comment comment;
+    private User user;
 
     public Connection(Socket socket, User user){
         this.socket = socket;
-        this.user = user;
+        this.loggedInUser = user;
         us = new UserService();
         ts = new TestService();
         gs = new GroupService();
@@ -91,38 +92,35 @@ public class Connection extends Thread{
 
     private void handleInput(String input){
         String[] split = input.split("#");
-        User u;
-        Test t;
-        UserGroup ug;
         switch(split[0]){
             case "REGISTER":
-                u = new User(split[1], split[2], split[3], split[4], split[5]);
-                us.createUser(u);
+                user = new User(split[1], split[2], split[3], split[4], split[5]);
+                us.createUser(user);
                 out.println("REGSUCCESS#Mhmm");
-                Mail.sendWelcomeEmail(u.getEmail(), u.getFirstName());
+                Mail.sendWelcomeEmail(user.getEmail(), user.getFirstName());
                 break;
             case "LOGIN":
                 userQuery = us.getEm().createNamedQuery("User.findByMail", User.class);
                 try{
-                    u = userQuery.setParameter("email", split[1]).getSingleResult();
-                    if(!u.getPassword().equals(split[2])){
+                    user = userQuery.setParameter("email", split[1]).getSingleResult();
+                    if(!user.getPassword().equals(split[2])){
                         out.println("ERROR#Wrong password");
                         return;
                     }
-                    out.println("LOGIN#" + u.getFirstName() + "#" + u.getRole() + "#" + u.getUid());
-                    user = u;
+                    out.println("LOGIN#" + user.getFirstName() + "#" + user.getRole() + "#" + user.getUid());
+                    loggedInUser = user;
                 } catch (NoResultException e){
                     out.println("ERROR#No such user registered. Check your username.");
                 }
                 break;
             case "CREATEQUIZ":
-                t = new Test(split[1], split[2]);
-                ts.createTest(t);
+                test = new Test(split[1], split[2]);
+                ts.createTest(test);
                 break;
             case "CREATETEST":
                 System.out.println("Array length: " + split.length);
-                Test test = new Test(split[1], split[2], split[3], split[4], split[5], split[6], split[7], split[8]);
-                test.setCreator(user);
+                test = new Test(split[1], split[2], split[3], split[4], split[5], split[6], split[7], split[8]);
+                test.setCreator(loggedInUser);
                 ts.setTest(test);
                 break;
             case "GETUTEST":
@@ -177,33 +175,33 @@ public class Connection extends Thread{
                 int i = 0;
                 while(i < split.length){
                     if(split[i].equals("QUESTION")){
-                        Question q = new Question(split[++i], split[++i], ts.getTest(), Integer.parseInt(split[++i]));
+                        question = new Question(split[++i], split[++i], ts.getTest(), Integer.parseInt(split[++i]));
                         while(i + 1 < split.length){
                             if(split[++i].equals("ANSWER")){
-                                Answer a = new Answer(split[++i], split[++i].equals("true") ? true : false, q, Integer.parseInt(split[++i]));
-                                q.addAnswer(a);
+                                answer = new Answer(split[++i], split[++i].equals("true") ? true : false, question, Integer.parseInt(split[++i]));
+                                question.addAnswer(answer);
                             } else {
                                 break;
                             }
                         }
-                        ts.addQuestion(q);
+                        ts.addQuestion(question);
                     }
                     i++;
                 }
                 break;
 
             case "CREATEGROUP":
-                ug = new UserGroup(split[1]);
+                userGroup = new UserGroup(split[1]);
                 for(int j = 2; j < split.length;){
                     userQuery = us.getEm().createNamedQuery("User.findById", User.class);
                     try{
-                        ug.addUser(userQuery.setParameter("uid", Integer.parseInt(split[j++])).getSingleResult());
+                        userGroup.addUser(userQuery.setParameter("uid", Integer.parseInt(split[j++])).getSingleResult());
                     } catch (NoResultException e){
                         System.out.println("No user was found with that ID");
                     }
                 }
                 out.println("SUCCESS#Your group was created successfully");
-                gs.createGroup(ug);
+                gs.createGroup(userGroup);
                 break;
             case "GETUSERSFORGROUP":
                 userQuery = us.getEm().createNamedQuery("User.getStudents", User.class);
@@ -241,14 +239,14 @@ public class Connection extends Thread{
                 break;
             case "FETCHTESTBYID":
                 try{
-                    Test testFromId = ts.getTestFromId(Integer.parseInt(split[1]));
-                    System.out.println(testFromId.getTitle());
+                    test = ts.getTestFromId(Integer.parseInt(split[1]));
+                    System.out.println(test.getTitle());
                     out.println("TAKETEST#"
-                                + testFromId.getTitle() + "#"
-                                + testFromId.getDescription() + "#"
-                                + testFromId.getTime() + "#"
-                                + testFromId.getTestId());
-                    for(Object o : testFromId.getQuestions()){
+                                + test.getTitle() + "#"
+                                + test.getDescription() + "#"
+                                + test.getTime() + "#"
+                                + test.getTestId());
+                    for(Object o : test.getQuestions()){
                         out.println(((Question)o).getSendData());
                     }
                     out.println("SHOWTEST#");
@@ -257,18 +255,18 @@ public class Connection extends Thread{
                 }
                 break;
             case "ADDTAKENTEST":
-                Test originalTest = ts.getTestFromId(Integer.parseInt(split[1]));
-                UTest utest = new UTest(originalTest, Integer.parseInt(split[2]));
-                uts.setTest(utest);
+                test = ts.getTestFromId(Integer.parseInt(split[1]));
+                uTest = new UTest(test, Integer.parseInt(split[2]));
+                uts.setTest(uTest);
                 break;
             case "ADDUSERQUESTION":
                 questionQuery = uts.getEm().createNamedQuery("Question.findById", Question.class);
-                Question resultQuestion = questionQuery.setParameter("id", Integer.parseInt(split[1])).getSingleResult();
-                UQuestion uQuestion = new UQuestion(resultQuestion);
+                question = questionQuery.setParameter("id", Integer.parseInt(split[1])).getSingleResult();
+                uQuestion = new UQuestion(question);
                 for(int j = 2; j < split.length; j++){
                     answerQuery = uts.getEm().createNamedQuery("Answer.findById", Answer.class);
-                    Answer resultAnswer = answerQuery.setParameter("id", Integer.parseInt(split[j++])).getSingleResult();
-                    UAnswer uAnswer = new UAnswer(resultAnswer, Integer.parseInt(split[j++]), split[j++], split[j].equals("true") ? true : false);
+                    answer = answerQuery.setParameter("id", Integer.parseInt(split[j++])).getSingleResult();
+                    uAnswer = new UAnswer(answer, Integer.parseInt(split[j++]), split[j++], split[j].equals("true") ? true : false);
                     uQuestion.getUserAnswers().add(uAnswer);
                 }
                 uts.addQuestion(uQuestion);
@@ -371,10 +369,10 @@ public class Connection extends Thread{
                 userQuery = us.getEm().createNamedQuery("User.findById", User.class);
                 System.out.println(input);
                 try{
-                    Test testById = testQuery.setParameter("testId", Integer.parseInt(split[1])).getSingleResult();
-                    User userById = userQuery.setParameter("uid", Integer.parseInt(split[2])).getSingleResult();
+                    test = testQuery.setParameter("testId", Integer.parseInt(split[1])).getSingleResult();
+                    user = userQuery.setParameter("uid", Integer.parseInt(split[2])).getSingleResult();
 
-                    shareToUser(testById, userById);
+                    shareToUser(test, user);
 
                 } catch (NoResultException e){
                     System.out.println(e);
@@ -382,12 +380,21 @@ public class Connection extends Thread{
             case "SHARETOGROUP":
                 testQuery = ts.getEm().createNamedQuery("Test.findById", Test.class);
                 userGroupQuery = us.getEm().createNamedQuery("UserGroup.findById", UserGroup.class);
+                try{
+                    test = testQuery.setParameter("testId", Integer.parseInt(split[1])).getSingleResult();
+                    userGroup = userGroupQuery.setParameter("groupId", Integer.parseInt(split[2])).getSingleResult();
+                    System.out.println(userGroup.getUsers().size());
+                    for(Object u : userGroup.getUsers()){
+                        shareToUser(test, (User)u);
+                    }
+                } catch (NoResultException e){
+                    out.println("ERROR#" + e);
+                }
                 break;
         }
     }
 
     private void shareToUser(Test t, User u){
-        System.out.println("I was here");
         if(u.hasNotTaken(t)){
             us.getEm().getTransaction().begin();
             u.addTestToTake(t);
