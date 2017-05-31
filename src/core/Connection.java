@@ -42,6 +42,14 @@ public class Connection extends Thread{
 
     private Question question;
 
+    private TypedQuery<Test> testQuery;
+    private TypedQuery<UTest> uTestQuery;
+    private TypedQuery<User> userQuery;
+    private TypedQuery<Question> questionQuery;
+    private TypedQuery<Answer> answerQuery;
+    private TypedQuery<UserGroup> userGroupQuery;
+
+
 
     public Connection(Socket socket, User user){
         this.socket = socket;
@@ -94,9 +102,9 @@ public class Connection extends Thread{
                 Mail.sendWelcomeEmail(u.getEmail(), u.getFirstName());
                 break;
             case "LOGIN":
-                TypedQuery<User> userByUsername = us.getEm().createNamedQuery("User.findByMail", User.class);
+                userQuery = us.getEm().createNamedQuery("User.findByMail", User.class);
                 try{
-                    u = userByUsername.setParameter("email", split[1]).getSingleResult();
+                    u = userQuery.setParameter("email", split[1]).getSingleResult();
                     if(!u.getPassword().equals(split[2])){
                         out.println("ERROR#Wrong password");
                         return;
@@ -118,9 +126,9 @@ public class Connection extends Thread{
                 ts.setTest(test);
                 break;
             case "GETUTEST":
-                TypedQuery<UTest> getAllUTest = ts.getEm().createNamedQuery("UTest.selectAll", UTest.class);
+                uTestQuery = ts.getEm().createNamedQuery("UTest.selectAll", UTest.class);
                 try {
-                    ObservableList<UTest> allUTest = FXCollections.observableArrayList(getAllUTest.getResultList());//Sparar data i arraylist
+                    ObservableList<UTest> allUTest = FXCollections.observableArrayList(uTestQuery.getResultList());//Sparar data i arraylist
                     String tests = "GETUTEST#";
                     for (int i = 0; i <allUTest.size(); i++) {
                         tests += allUTest.get(i).getTestAnswered().getTitle() + "@" + allUTest.get(i).getTestAnswered().getTestId()
@@ -133,9 +141,9 @@ public class Connection extends Thread{
                 break;
 
             case "GETSTUDENTS":
-                TypedQuery<User> getAllStudents = us.getEm().createNamedQuery("User.getStudents", User.class);
+                userQuery = us.getEm().createNamedQuery("User.getStudents", User.class);
                 try {
-                    ObservableList<User> allStudents = FXCollections.observableArrayList(getAllStudents.getResultList());//Sparar data i arraylist
+                    ObservableList<User> allStudents = FXCollections.observableArrayList(userQuery.getResultList());//Sparar data i arraylist
                     String tests = "GETSTUDENTSTOSHARE#";
                     for (int i = 0; i < allStudents.size(); i++) {
                         tests += allStudents.get(i).getFirstName() + " " + allStudents.get(i).getLastName()
@@ -147,9 +155,9 @@ public class Connection extends Thread{
                 catch(NoResultException e){}
                 break;
             case "ALLTESTS":
-                TypedQuery<Test> getAllTests = ts.getEm().createNamedQuery("Test.selectAll", Test.class);//Hämtar data från databasen
+                testQuery = ts.getEm().createNamedQuery("Test.selectAll", Test.class);//Hämtar data från databasen
             try {
-                ObservableList<Test> allTests = FXCollections.observableArrayList(getAllTests.getResultList());//Sparar data i arraylist
+                ObservableList<Test> allTests = FXCollections.observableArrayList(testQuery.getResultList());//Sparar data i arraylist
                 String tests = "ALLTESTS# ";
                 for (int i = 0; i < allTests.size(); i++) {
                     tests += allTests.get(i).getTitle() + "@" + allTests.get(i).getTestId() + "@";
@@ -187,9 +195,9 @@ public class Connection extends Thread{
             case "CREATEGROUP":
                 ug = new UserGroup(split[1]);
                 for(int j = 2; j < split.length;){
-                    TypedQuery<User> userById = us.getEm().createNamedQuery("User.findById", User.class);
+                    userQuery = us.getEm().createNamedQuery("User.findById", User.class);
                     try{
-                        ug.addUser(userById.setParameter("uid", Integer.parseInt(split[j++])).getSingleResult());
+                        ug.addUser(userQuery.setParameter("uid", Integer.parseInt(split[j++])).getSingleResult());
                     } catch (NoResultException e){
                         System.out.println("No user was found with that ID");
                     }
@@ -198,9 +206,9 @@ public class Connection extends Thread{
                 gs.createGroup(ug);
                 break;
             case "GETUSERSFORGROUP":
-                TypedQuery<User> getStudents = us.getEm().createNamedQuery("User.getStudents", User.class);
+                userQuery = us.getEm().createNamedQuery("User.getStudents", User.class);
                 try {
-                    ObservableList<User> allStudents = FXCollections.observableArrayList(getStudents.getResultList());//Sparar data i arraylist
+                    ObservableList<User> allStudents = FXCollections.observableArrayList(userQuery.getResultList());//Sparar data i arraylist
                     String tests = "STUDENTSFORGROUP#";
                     for (i = 0; i < allStudents.size(); i++) {
                         tests += allStudents.get(i).getFirstName() + " " + allStudents.get(i).getLastName()
@@ -213,7 +221,10 @@ public class Connection extends Thread{
                 }
                 break;
             case "GETGROUPS":
-                out.println(gs.getGroups());
+                out.println("GETGROUPS" + gs.getGroups());
+                break;
+            case "GETGROUPSFORSHARE":
+                out.println("GETGROUPSTOSHARE" + gs.getGroups());
                 break;
             case "PERSISTTEST":
                 ts.persistTest();
@@ -251,11 +262,11 @@ public class Connection extends Thread{
                 uts.setTest(utest);
                 break;
             case "ADDUSERQUESTION":
-                TypedQuery<Question> query = uts.getEm().createNamedQuery("Question.findById", Question.class);
-                Question resultQuestion = query.setParameter("id", Integer.parseInt(split[1])).getSingleResult();
+                questionQuery = uts.getEm().createNamedQuery("Question.findById", Question.class);
+                Question resultQuestion = questionQuery.setParameter("id", Integer.parseInt(split[1])).getSingleResult();
                 UQuestion uQuestion = new UQuestion(resultQuestion);
                 for(int j = 2; j < split.length; j++){
-                    TypedQuery<Answer> answerQuery = uts.getEm().createNamedQuery("Answer.findById", Answer.class);
+                    answerQuery = uts.getEm().createNamedQuery("Answer.findById", Answer.class);
                     Answer resultAnswer = answerQuery.setParameter("id", Integer.parseInt(split[j++])).getSingleResult();
                     UAnswer uAnswer = new UAnswer(resultAnswer, Integer.parseInt(split[j++]), split[j++], split[j].equals("true") ? true : false);
                     uQuestion.getUserAnswers().add(uAnswer);
@@ -279,7 +290,7 @@ public class Connection extends Thread{
                 out.println(uts.testList());
                 break;
             case "GETUSERSFORPDF":
-                TypedQuery<User> userQuery = us.getEm().createNamedQuery("User.findUserByUTest", User.class);
+                userQuery = us.getEm().createNamedQuery("User.findUserByUTest", User.class);
                 try{
                     ArrayList<User> users = new ArrayList<>(userQuery.setParameter("testId", Integer.parseInt(split[1])).getResultList());
                     String output = "GETUSERSFORPDF#";
@@ -293,10 +304,10 @@ public class Connection extends Thread{
                 break;
 
             case "GetInfoStatistic":
-                TypedQuery<UTest> statistic = us.getEm().createNamedQuery("UTest.findByGroupAndTest", UTest.class);
+                uTestQuery = us.getEm().createNamedQuery("UTest.findByGroupAndTest", UTest.class);
                 try{
-                    statistic.setParameter("groupId", split[2]);
-                    ArrayList<UTest> users = new ArrayList<>(statistic.setParameter("testId", Integer.parseInt(split[1])).getResultList());
+                    uTestQuery.setParameter("groupId", split[2]);
+                    ArrayList<UTest> users = new ArrayList<>(uTestQuery.setParameter("testId", Integer.parseInt(split[1])).getResultList());
                     String output = "GETUSERSFORPDF#";
                     for(UTest UTestS : users){
                         output += UTestS.getGrade() + "@" + UTestS.getScore() + "@";
@@ -307,15 +318,15 @@ public class Connection extends Thread{
                 }
                 break;
             case "GETSTATGROUPSANDTESTS":
-                TypedQuery<Test> testQuery = ts.getEm().createQuery("SELECT t FROM Test t", Test.class);
-                TypedQuery<UserGroup> ugQuery = us.getEm().createQuery("SELECT u FROM UserGroup u", UserGroup.class);
+                testQuery = ts.getEm().createQuery("SELECT t FROM Test t", Test.class);
+                userGroupQuery = us.getEm().createQuery("SELECT u FROM UserGroup u", UserGroup.class);
                 try{
                     String tests = "ADDTESTS";
                     String groups = "ADDGROUPS";
                     for(Test te : testQuery.getResultList()){
                         tests += "#" + te.getTitle() + "#" + te.getTestId();
                     }
-                    for(UserGroup ugr : ugQuery.getResultList()){
+                    for(UserGroup ugr : userGroupQuery.getResultList()){
                         groups += "#" + ugr.getGroupName() + "#" + ugr.getGroupId();
                     }
                     out.println(tests);
@@ -326,10 +337,10 @@ public class Connection extends Thread{
                 }
                 break;
             case "GETSTATISTICS":
-                TypedQuery<UTest> statistics = us.getEm().createNamedQuery("UTest.findByGroupAndTest", UTest.class);
+                uTestQuery = us.getEm().createNamedQuery("UTest.findByGroupAndTest", UTest.class);
                 try{
                     System.out.println(split[1] + " " + split[2]);
-                    ArrayList<UTest> stattests = new ArrayList<>(statistics.setParameter("testId", Integer.parseInt(split[1])).setParameter("groupId", Integer.parseInt(split[2])).getResultList());
+                    ArrayList<UTest> stattests = new ArrayList<>(uTestQuery.setParameter("testId", Integer.parseInt(split[1])).setParameter("groupId", Integer.parseInt(split[2])).getResultList());
                     System.out.println(stattests.size());
                     int g = 0, vg = 0, ig = 0, score = 0;
                     for(UTest temp : stattests){
@@ -354,25 +365,33 @@ public class Connection extends Thread{
                 }
                 break;
             case "SHARETOSTUDENT":
-                TypedQuery<Test> testByIdQuery = ts.getEm().createNamedQuery("Test.findById", Test.class);
-                TypedQuery<User> userByIdQuery = us.getEm().createNamedQuery("User.findById", User.class);
+                testQuery = ts.getEm().createNamedQuery("Test.findById", Test.class);
+                userQuery = us.getEm().createNamedQuery("User.findById", User.class);
                 System.out.println(input);
                 try{
-                    Test testById = testByIdQuery.setParameter("testId", Integer.parseInt(split[1])).getSingleResult();
-                    User userById = userByIdQuery.setParameter("uid", Integer.parseInt(split[2])).getSingleResult();
-                    System.out.println("I was here");
-                    if(userById.hasNotTaken(testById)){
-                        us.getEm().getTransaction().begin();
-                        userById.addTestToTake(testById);
-                        us.getEm().getTransaction().commit();
-                        out.println("SUCCESS#Test was shared successfully");
-                        Mail.sendNewTestMail(userById.getEmail(), userById.getFirstName());
-                    }
+                    Test testById = testQuery.setParameter("testId", Integer.parseInt(split[1])).getSingleResult();
+                    User userById = userQuery.setParameter("uid", Integer.parseInt(split[2])).getSingleResult();
+
+                    shareToUser(testById, userById);
 
                 } catch (NoResultException e){
                     System.out.println(e);
                 }
+            case "SHARETOGROUP":
+                testQuery = ts.getEm().createNamedQuery("Test.findById", Test.class);
+                userGroupQuery = us.getEm().createNamedQuery("UserGroup.findById", UserGroup.class);
+                break;
+        }
+    }
 
+    private void shareToUser(Test t, User u){
+        System.out.println("I was here");
+        if(u.hasNotTaken(t)){
+            us.getEm().getTransaction().begin();
+            u.addTestToTake(t);
+            us.getEm().getTransaction().commit();
+            out.println("SUCCESS#Test was shared successfully");
+            Mail.sendNewTestMail(u.getEmail(), u.getFirstName());
         }
     }
 

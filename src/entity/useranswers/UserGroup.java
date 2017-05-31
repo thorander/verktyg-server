@@ -17,8 +17,8 @@ import java.util.List;
  */
 
 @Entity
-/*@NamedQuery(name="UserGroup.findByName",
-        query="SELECT c FROM User c WHERE c.firstName = :firstname")*/
+@NamedQuery(name="UserGroup.findById",
+        query="SELECT c FROM UserGroup c WHERE c.groupId = :groupId")
 public class UserGroup {
 
     @Id
