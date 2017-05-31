@@ -111,7 +111,7 @@ public class UTestService {
 
     public String testList() {
 
-        String s = "UTEST#";
+        String s = "GETTESTLIST#";
         TypedQuery<UTest> query =
                 em.createQuery("SELECT c FROM UTest c", UTest.class);
 
@@ -123,6 +123,7 @@ public class UTestService {
             return s;
         }
         return "nothing";
+
     }
 
     public String getUTest() {
