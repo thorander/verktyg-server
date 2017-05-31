@@ -133,11 +133,11 @@ public class UTestService {
     public String getUserList() {
         TypedQuery<User> studentQuery = em.createNamedQuery("User.findUserWhoTookTest", User.class);
 
-        String temp = "GETTESTUSER#";
+        String temp = "GETTESTUSER";
         try{
             ArrayList<User> userResults = new ArrayList<>(studentQuery.setParameter("testTitle", testname).getResultList());
             for(User u : userResults){
-                temp += u.getFirstName() + " " + u.getLastName() + "#" + u.getUid();
+                temp += "#" + u.getFirstName() + " " + u.getLastName() + "#" + u.getUid();
             }
         } catch (NoResultException e){
 
