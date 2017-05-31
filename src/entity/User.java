@@ -14,7 +14,8 @@ import java.util.stream.Collectors;
         query="SELECT c FROM User c WHERE c.email = :email"),
         @NamedQuery(name="User.findUserByUTest",
 query = "SELECT p FROM User p, UTest u WHERE u MEMBER OF p.takenTests AND u.testAnswered.testId = :testId "),
-@NamedQuery(name="User.findById", query="SELECT c FROM User c WHERE c.uid = :uid")})
+@NamedQuery(name="User.findById", query="SELECT c FROM User c WHERE c.uid = :uid"),
+@NamedQuery(name="User.findUserWhoTookTest", query="SELECT c FROM User c JOIN UTest t WHERE c.role = 'student' AND t MEMBER OF c.takenTests AND t.testAnswered.title = :testTitle")})
 @Table
 public class User {
     @Id

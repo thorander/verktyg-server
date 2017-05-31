@@ -1,12 +1,15 @@
 package service;
 
+import core.Main;
 import entity.Question;
 import entity.Test;
+import entity.User;
 import entity.useranswers.UAnswer;
 import entity.useranswers.UQuestion;
 import entity.useranswers.UTest;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -19,6 +22,8 @@ public class UTestService {
     EntityManager em;
 
     private UTest test;
+    private String testname;
+    private String id;
 
     public UTestService(){
         emf = Persistence.createEntityManagerFactory("JPAVerktyg");
@@ -109,30 +114,57 @@ public class UTestService {
         return true;
     }
 
-    public String testList() {
+    public String getTestList() {
 
-        String s = "GETTESTLIST#";
-        TypedQuery<UTest> query =
-                em.createQuery("SELECT c FROM UTest c", UTest.class);
+        String s = "GETTESTLIST";
+        TypedQuery<Test> query =
+                em.createQuery("SELECT c FROM Test c", Test.class);
 
-        List<UTest> utest = query.getResultList();
+        List<Test> utest = query.getResultList();
         if(utest.size() > 0){
-            for (UTest u : utest) {
-                s += "#" + u.getUTestId() + "#" + u.getTestAnswered().getTitle();
+            for (Test u : utest) {
+                s += "#" + u.getTestId() + "#" + u.getTitle();
             }
             return s;
         }
         return "nothing";
+    }
 
+    public String getUserList() {
+        TypedQuery<User> studentQuery = em.createNamedQuery("User.findUserWhoTookTest", User.class);
+
+        String temp = "GETTESTUSER#";
+        try{
+            ArrayList<User> userResults = new ArrayList<>(studentQuery.setParameter("testTitle", testname).getResultList());
+            for(User u : userResults){
+                temp += u.getFirstName() + " " + u.getLastName() + "#" + u.getUid();
+            }
+        } catch (NoResultException e){
+
+        }
+        return temp;
+    }
+
+    public String setTestname(String s) {
+        this.testname = s;
+        System.out.println(testname);
+        return testname;
+
+    }
+
+    public String setUserId(String i) {
+        this.id = i;
+        System.out.println(i);
+        return i;
     }
 
     public String getUTest() {
 
         String s = "UTEST#";
         TypedQuery<UTest> query =
-                em.createQuery("SELECT c FROM UTest c WHERE c.UTestId = :id", UTest.class);
+                em.createQuery("SELECT c FROM UTest c JOIN User u WHERE c MEMBER OF u.takenTests AND u.uid = :uid AND c.testAnswered.title = :testName", UTest.class);
         try{
-            test = query.setParameter("id", 109).getSingleResult();
+            test = query.setParameter("testName", testname).setParameter("uid", Integer.parseInt(id)).getSingleResult();
         } catch (NoResultException e){
             System.out.println(e);
             return "nothing#";

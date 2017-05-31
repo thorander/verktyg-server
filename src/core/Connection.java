@@ -274,11 +274,22 @@ public class Connection extends Thread{
                 us.createUser(user);
                 out.println("SUCCESS#You turned in your test successfully");
                 break;
-            case "GETTEST":
+            case "SENDTESTNAME":
+                //out.println(uts.setTestName());
+                uts.setTestname(split[1]);
+/*                out.println(uts.getUTest());*/
+                break;
+            case "SENDUSERID":
+                out.println(uts.setUserId(split[1]));
                 out.println(uts.getUTest());
                 break;
-            case "TESTLIST":
-                out.println(uts.testList());
+            case "GETTEST":
+                break;
+            case "GETTESTLIST":
+                out.println(uts.getTestList());
+                break;
+            case "GETUSERLIST":
+                out.println(uts.getUserList());
                 break;
             case "GETUSERSFORPDF":
                 TypedQuery<User> userQuery = us.getEm().createNamedQuery("User.findUserByUTest", User.class);
