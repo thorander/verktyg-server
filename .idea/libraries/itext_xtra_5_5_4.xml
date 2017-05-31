@@ -4,6 +4,7 @@
       <root url="jar://$PROJECT_DIR$/../Skola/Programmering/itext-xtra-5.5.4.jar!/" />
       <root url="jar://$PROJECT_DIR$/../Skola/Programmering/itext-pdfa-5.5.4.jar!/" />
       <root url="jar://$PROJECT_DIR$/../Skola/Programmering/itextpdf-5.5.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javax.mail.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../Skola/Programmering/itext-xtra-5.5.4-javadoc.jar!/" />

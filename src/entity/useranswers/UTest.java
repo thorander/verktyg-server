@@ -7,12 +7,12 @@ import org.eclipse.persistence.indirection.IndirectList;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-
+//
 
 @Entity
 @NamedQueries({
         @NamedQuery(name = "UTest.selectAll",
-                query = "SELECT t FROM UTest t WHERE t.corrected = true "),
+                query = "SELECT t FROM UTest t"),
         @NamedQuery(name = "UTest.findByGroupAndTest",
                 query = "SELECT t FROM UTest t JOIN User u JOIN UserGroup ug WHERE t MEMBER OF u.takenTests AND u MEMBER OF ug.users" +
                         " AND t.testAnswered.testId = :testId AND ug.groupId = :groupId")
