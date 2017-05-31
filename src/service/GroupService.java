@@ -62,14 +62,14 @@ public class GroupService {
     }
 
     public String getGroups() {
-        String s = "GETGROUPS";
+        String s = "";
         TypedQuery<UserGroup> query =
                 em.createQuery("SELECT c FROM UserGroup c", UserGroup.class);
 
         List<UserGroup> groups = query.getResultList();
 
         for (UserGroup u : groups) {
-            s += "#" + u.getGroupName();
+            s += "#" + u.getGroupName() + "#" + u.getGroupId();
         }
         return s;
     }
