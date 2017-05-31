@@ -118,6 +118,7 @@ public class Connection extends Thread{
                 ts.setTest(test);
                 break;
             case "GETUTEST":
+
                 TypedQuery<UTest> getAllUTest = ts.getEm().createNamedQuery("UTest.selectAll", UTest.class);
                 try {
                     ObservableList<UTest> allUTest = FXCollections.observableArrayList(getAllUTest.getResultList());//Sparar data i arraylist
