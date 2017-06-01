@@ -403,6 +403,11 @@ public class Connection extends Thread{
                     out.println("ERROR#" + e);
                 }
                 break;
+            case "CORRECTING":
+                for(int a = 0; a < split.length; a++){
+                    System.out.println("" + split[a]);
+                }
+                break;
         }
     }
 
