@@ -386,8 +386,9 @@ public class Connection extends Thread{
                     shareToUser(test, user);
 
                 } catch (NoResultException e){
-                    System.out.println(e);
+                    e.printStackTrace();
                 }
+                break;
             case "SHARETOGROUP":
                 testQuery = ts.getEm().createNamedQuery("Test.findById", Test.class);
                 userGroupQuery = us.getEm().createNamedQuery("UserGroup.findById", UserGroup.class);

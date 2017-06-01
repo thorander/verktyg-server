@@ -179,7 +179,7 @@ public class UTestService {
             s += "#" + question.getUQuestionId() + "#" + question.getQuestion().getQuestion() + "#" + question.getQuestion().getScore();
             for (Object answerTemp : question.getUserAnswers()) {
                 UAnswer answer = (UAnswer) answerTemp;
-                s += "#ANSWER" + "#" + answer.getAnswer().getAnswer() + "#" + answer.getAnswer().isCorrect() + "#" + answer.isChecked();
+                s += "#ANSWER" + "#" + question.getQuestion().getQuestionType() + "#" + answer.getAnswerText() + "#" + answer.getAnswer().isCorrect() + "#" + answer.isChecked() + "#" + answer.getAnswerOrder();
             }
         }
         return s;

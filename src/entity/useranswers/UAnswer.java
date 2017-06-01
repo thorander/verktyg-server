@@ -60,4 +60,6 @@ public class UAnswer {
     public boolean isChecked(){
         return checked;
     }
+
+    public String getAnswerText(){ return answerText;}
 }
