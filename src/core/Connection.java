@@ -405,7 +405,8 @@ public class Connection extends Thread{
                 break;
             case "CORRECTING":
                 for(int a = 0; a < split.length; a++){
-                    System.out.println("" + split[a]);
+                    //System.out.println("" + split[a]);
+                    uts.Correcting(split[a]);
                 }
                 break;
         }

@@ -24,7 +24,7 @@ public class UTestService {
     private UTest test;
     private String testname;
     private String id;
-
+    private String correctingResult;
     public UTestService(){
         emf = Persistence.createEntityManagerFactory("JPAVerktyg");
         em = emf.createEntityManager();
@@ -165,6 +165,7 @@ public class UTestService {
                 em.createQuery("SELECT c FROM UTest c JOIN User u WHERE c MEMBER OF u.takenTests AND u.uid = :uid AND c.testAnswered.title = :testName", UTest.class);
         try{
             test = query.setParameter("testName", testname).setParameter("uid", Integer.parseInt(id)).getSingleResult();
+
         } catch (NoResultException e){
             System.out.println(e);
             return "nothing#";
@@ -186,9 +187,11 @@ public class UTestService {
     }
 
     public String Correcting(String i) {
-        this.id = i;
-        System.out.println(i);
+        this.correctingResult = i;
+        System.out.println(correctingResult);
+        System.out.println("namn: "+ testname + " id: " +id);
         return "nothing";
     }
+
 
 }
