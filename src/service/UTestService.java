@@ -24,7 +24,11 @@ public class UTestService {
     private UTest test;
     private String testname;
     private String id;
-    private String correctingResult;
+    private String correctingComment;
+    private int correctingScore;
+    private List<String> commentList;
+    private List<Integer> scoreList;
+
     public UTestService(){
         emf = Persistence.createEntityManagerFactory("JPAVerktyg");
         em = emf.createEntityManager();
@@ -186,12 +190,29 @@ public class UTestService {
         return s;
     }
 
-    public String Correcting(String i) {
-        this.correctingResult = i;
-        System.out.println(correctingResult);
-        System.out.println("namn: "+ testname + " id: " +id);
-        return "nothing";
+    public String correctingComment(String i) {
+        this.correctingComment = i;
+        /*commentList = new ArrayList<>();
+        commentList.add(correctingComment);*/
+
+        System.out.println("result: "+correctingComment);
+        //System.out.println("namn: "+ testname + " id: " +id);
+
+        //Sedan skriva såhär?
+        /*test.setCorrected(true);
+        test.setShowResults(true);
+        test.setScore(correctingScore);
+        test.setComment(""+correctingComment);
+        */
+        return correctingComment;
     }
 
+    public int correctingScore(int i) {
+        this.correctingScore = i;
+        /*scoreList = new ArrayList<>();
+        scoreList.add(correctingScore);*/
+        System.out.println("score: "+correctingScore);
+        return correctingScore;
+    }
 
 }

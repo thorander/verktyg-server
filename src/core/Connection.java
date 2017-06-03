@@ -404,9 +404,20 @@ public class Connection extends Thread{
                 }
                 break;
             case "CORRECTING":
-                for(int a = 0; a < split.length; a++){
-                    //System.out.println("" + split[a]);
-                    uts.Correcting(split[a]);
+
+              /*  for(int x = 1; x < split.length; x++) {
+                    uts.correctingResult(split[x]);
+                }*/
+
+              // Skickar endast första kommentar, vill inte skicka poäng :(
+
+                for(int x = 1; x < split.length; x++){
+                    uts.correctingComment(split[x]);
+                    if(split[x].equals("SCORE")){
+                        uts.correctingScore(Integer.parseInt(split[x]));
+                    } else {
+                        break;
+                    }
                 }
                 break;
         }
@@ -421,14 +432,5 @@ public class Connection extends Thread{
             Mail.sendNewTestMail(u.getEmail(), u.getFirstName());
         }
     }
-
-    /*public void setUser(String u) {
-        this.users = u;
-
-        if(!users.equals("")){
-            out.println(users);
-        }
-        //System.out.println(users);
-    }*/
 
 }
