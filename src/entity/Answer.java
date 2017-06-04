@@ -3,6 +3,9 @@ package entity;
 
 import javax.persistence.*;
 
+/**
+ * An answer. Keeps properties related to an answer.
+ */
 @Entity
 @Table
 @NamedQuery(name="Answer.findById",

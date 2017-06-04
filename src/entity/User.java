@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * User
+ * Represents a user, with all properties related to one.
+ * Keeps a list of references to all taken tests, and all tests available to be taken.
+ */
 @Entity
 @NamedQueries({@NamedQuery(name ="User.getStudents", query="SELECT c FROM User c WHERE   c.role = '" + "student" + "'"),
 @NamedQuery(name="User.findByMail",

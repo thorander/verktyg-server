@@ -8,6 +8,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * A test. The actual test, with title and description and a list of questions
+ * and other properties related to a test.
+ */
+
 @Entity
 @NamedQueries({ @NamedQuery (name="Test.selectAll",
 query="SELECT t FROM Test t"),

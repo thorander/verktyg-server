@@ -10,6 +10,9 @@ import entity.Test;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
+/**
+ * A service class for creating PDF's
+ */
 
 public class PdfService
 {

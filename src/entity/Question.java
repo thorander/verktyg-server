@@ -4,6 +4,9 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A question. Keeps properties related to a question.
+ */
 @Entity
 @Table
 @NamedQuery(name="Question.findById",

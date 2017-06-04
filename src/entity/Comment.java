@@ -3,6 +3,9 @@ package entity;
 import entity.useranswers.UQuestion;
 import javax.persistence.*;
 
+/**
+ * A comment belonging to a question.
+ */
 @Entity
 public class Comment {
 

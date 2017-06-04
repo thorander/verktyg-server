@@ -5,6 +5,9 @@ import javax.mail.*;
 import javax.mail.internet.*;
 import javax.activation.*;
 
+/**
+ * Mail - takes care of all mailing to users.
+ */
 public class Mail {
 
     private static Properties props = new Properties();

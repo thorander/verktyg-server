@@ -1,40 +1,44 @@
 package core;
 
-import com.sun.xml.internal.stream.Entity;
 import entity.*;
 import entity.useranswers.UAnswer;
 import entity.useranswers.UQuestion;
 import entity.useranswers.UTest;
-import entity.useranswers.UserGroup;
+import entity.UserGroup;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import service.*;
-
-import javax.jws.soap.SOAPBinding;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.List;
+
+
+/**
+ * The class responsible for all in- and out going
+ * communication with a client. One of these classes
+ * are created for each client that connects.
+ */
 
 public class Connection extends Thread{
 
-    private User loggedInUser;
-    private Socket socket;
-    private PrintWriter out;
-    private BufferedReader in;
+    //Fields
+    private User loggedInUser;                      //The user who is connected in this instance
+    private Socket socket;                          //The socket used for this communication
+    private PrintWriter out;                        //The stream for out going communication
+    private BufferedReader in;                      //The stream for incoming communication
 
     private String input;
 
+    //Declaration of service classes for easier access to database
     private UserService us;
     private TestService ts;
     private UTestService uts;
-
     private GroupService gs;
 
+    //Query variables to be reused throughout the class
     private TypedQuery<Test> testQuery;
     private TypedQuery<UTest> uTestQuery;
     private TypedQuery<User> userQuery;
@@ -42,6 +46,7 @@ public class Connection extends Thread{
     private TypedQuery<Answer> answerQuery;
     private TypedQuery<UserGroup> userGroupQuery;
 
+    //Variables to hold temporary results throughout the class
     private Test test;
     private Question question;
     private Answer answer;
@@ -52,6 +57,12 @@ public class Connection extends Thread{
     private Comment comment;
     private User user;
 
+    /**
+     * Constructor
+     *
+     * @param socket The socket accepted by ServerSocket from Main
+     * @param user The user from the database which is associated with this connection
+     */
     public Connection(Socket socket, User user){
         this.socket = socket;
         this.loggedInUser = user;
@@ -61,10 +72,8 @@ public class Connection extends Thread{
         uts = new UTestService();
     }
 
-    public Connection() {
-
-    }
-
+    //Run method. First instanciate in- and out-streams and then continually
+    //listen for incoming messages.
     public void run(){
         try {
             out = new PrintWriter(new OutputStreamWriter(
@@ -78,7 +87,6 @@ public class Connection extends Thread{
                 handleInput(input);
             }
         } catch (IOException e) {
-            System.out.println(socket.getInetAddress() + " disconnected.");
         } finally {
             try {
                 System.out.println(socket.getInetAddress() + " disconnected");
@@ -90,6 +98,7 @@ public class Connection extends Thread{
         }
     }
 
+    //The method which handles input from incoming communications
     private void handleInput(String input){
         String[] split = input.split("#");
         switch(split[0]){
@@ -423,6 +432,7 @@ public class Connection extends Thread{
         }
     }
 
+    //Shares Test t with User u, allowing the user to take the test
     private void shareToUser(Test t, User u){
         if(u.hasNotTaken(t)){
             us.getEm().getTransaction().begin();

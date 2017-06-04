@@ -10,7 +10,7 @@ import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
 /**
- * Created by Matilda on 2017-05-10.
+ * A service class for Test
  */
 public class TestService {
 

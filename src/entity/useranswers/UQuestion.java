@@ -7,7 +7,11 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * User question.
+ * Keeps information about the answered question such as a reference to the actual question
+ * and also how much score it got, and also keeps a list of user answers.
+ */
 @Entity
 public class UQuestion {
 
