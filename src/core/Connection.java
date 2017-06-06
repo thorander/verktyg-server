@@ -5,6 +5,7 @@ import entity.useranswers.UAnswer;
 import entity.useranswers.UQuestion;
 import entity.useranswers.UTest;
 import entity.UserGroup;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import service.*;
@@ -412,22 +413,14 @@ public class Connection extends Thread{
                     out.println("ERROR#" + e);
                 }
                 break;
-            case "CORRECTING":
-
-              /*  for(int x = 1; x < split.length; x++) {
-                    uts.correctingResult(split[x]);
-                }*/
-
-              // Skickar endast första kommentar, vill inte skicka poäng :(
-
-                for(int x = 1; x < split.length; x++){
-                    uts.correctingComment(split[x]);
-                    if(split[x].equals("SCORE")){
-                        uts.correctingScore(Integer.parseInt(split[x]));
-                    } else {
-                        break;
+            case "CORRECT":
+                    for(int x = 1; x < split.length; x++){
+                        uts.correctComment(split[x]);
+                        if(split[x].equals("1")) {
+                            uts.correctScore(Integer.parseInt(split[x]));
+                        }
                     }
-                }
+                uts.updateCorrect();
                 break;
         }
     }

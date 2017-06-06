@@ -90,7 +90,6 @@ public class Test {
         questions.add(q);
     }
 
-
     public Date getOpen() {
         return open;
     }

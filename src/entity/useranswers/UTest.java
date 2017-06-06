@@ -110,6 +110,11 @@ public class UTest {
 
     public int getUTestId(){return UTestId;}
 
+    public int setUTestId(int i) {
+        this.UTestId = i;
+        return UTestId;
+    }
+
     public String getComment(){return comment;}
 
     public void setComment(String comment){ this.comment = comment;}

@@ -11,7 +11,6 @@ import entity.useranswers.UTest;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * A service class for UTest
@@ -24,10 +23,11 @@ public class UTestService {
     private UTest test;
     private String testname;
     private String id;
-    private String correctingComment;
-    private int correctingScore;
+
     private List<String> commentList;
     private List<Integer> scoreList;
+    String correctComment;
+    private int testId;
 
     public UTestService(){
         emf = Persistence.createEntityManagerFactory("JPAVerktyg");
@@ -190,29 +190,68 @@ public class UTestService {
         return s;
     }
 
-    public String correctingComment(String i) {
-        this.correctingComment = i;
-        /*commentList = new ArrayList<>();
-        commentList.add(correctingComment);*/
+    public void updateCorrect() {
 
-        System.out.println("result: "+correctingComment);
+        StringBuilder builder = new StringBuilder();
+        for (String value : commentList) {
+            builder.append(value);
+        }
+        correctComment = builder.toString();
+        System.out.println("result: "+correctComment);
+
+        int correctScore = 0;
+        for(int i : scoreList) {
+            correctScore += i;
+        }
+        System.out.println("sum: "+correctScore);
+
+        String s = "";
+        TypedQuery<UTest> query =
+                em.createQuery("SELECT c FROM UTest c JOIN User u WHERE c MEMBER OF u.takenTests AND u.uid = :uid AND c.testAnswered.title = :testName", UTest.class);
+                //em.createQuery("SELECT c FROM UTest c JOIN User c WHERE c MEMBER OF u.takenTests AND u.testAnswered.testId = :testId AND u.uid = :uid", UTest.class);
+        try{
+            test = query.setParameter("testName", testname).setParameter("uid", Integer.parseInt(id)).getSingleResult();
+
+        } catch (NoResultException e){
+            System.out.println(e);
+        }
+
+        s += test.getUTestId();
+        testId = Integer.parseInt(s);
+        System.out.println(testId);
         //System.out.println("namn: "+ testname + " id: " +id);
 
-        //Sedan skriva såhär?
-        /*test.setCorrected(true);
-        test.setShowResults(true);
-        test.setScore(correctingScore);
-        test.setComment(""+correctingComment);
-        */
-        return correctingComment;
+        EntityTransaction updateTransaction = em.getTransaction();
+        updateTransaction.begin();
+        Query q = em.createQuery("UPDATE UTest u SET u.comment = :comment WHERE u.UTestId = :uid");
+        q.setParameter("comment", "Hej");
+        q.setParameter("uid", testId);
+
+        int updated = q.executeUpdate();
+            if (updated > 0) {
+                System.out.println("Done...");
+            }
+            updateTransaction.commit();
     }
 
-    public int correctingScore(int i) {
-        this.correctingScore = i;
-        /*scoreList = new ArrayList<>();
-        scoreList.add(correctingScore);*/
-        System.out.println("score: "+correctingScore);
-        return correctingScore;
+
+    public String correctComment(String i) {
+        commentList = new ArrayList<>();
+        commentList.add(i);
+        //System.out.println("comment: "+commentList);
+
+        return "nothing";
+    }
+
+
+    public int correctScore(Integer x) {
+        scoreList = new ArrayList<>();
+        scoreList.add(x);
+        //System.out.println("score: "+scoreList);
+
+        return 0;
     }
 
 }
+
+
