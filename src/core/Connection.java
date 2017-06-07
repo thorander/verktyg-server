@@ -265,7 +265,7 @@ public class Connection extends Thread{
                 break;
             case "PDF":
                 PdfService pdf = new PdfService();
-                pdf.createPdf();
+                pdf.createPdf(split[1], split[2]);
                 break;
             case "ADDTAKENTEST":
                 test = ts.getTestFromId(Integer.parseInt(split[1]));
@@ -306,6 +306,16 @@ public class Connection extends Thread{
                 out.println(uts.getUTest());
                 break;
             case "GETTEST":
+                TypedQuery<Test> testQuery = ts.getEm().createQuery("SELECT c FROM Test c", Test.class);
+                String result = "GETUTEST#";
+                try{
+                    for(Test t : testQuery.getResultList()){
+                        result += t.getTitle() + "@" + t.getTestId() + "@";
+                    }
+                    out.println(result);
+                } catch (NoResultException e){
+                    System.out.println(e);
+                }
                 break;
             case "GETTESTLIST":
                 out.println(uts.getTestList());

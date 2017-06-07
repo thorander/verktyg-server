@@ -16,6 +16,7 @@ import entity.useranswers.UQuestion;
 import entity.useranswers.UTest;
 
 
+import javax.persistence.TypedQuery;
 import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -35,7 +36,7 @@ public class PdfService {
     public PdfService() {
     }
 
-    public void createPdf() {
+    public void createPdf(String testId, String userId) {
         Document document = new Document();
         test = new UTest();
         ts = new TestService();
@@ -46,12 +47,11 @@ public class PdfService {
         Font myContentStyle = new Font();
 
         try {
+            TypedQuery<UTest> uQuery = ts.getEm().createQuery("SELECT c FROM UTest c JOIN User u WHERE c MEMBER OF u.takenTests AND c.testAnswered.testId = :testId AND u.uid = :uid", UTest.class);
+            test = uQuery.setParameter("testId", Integer.parseInt(testId)).setParameter("uid", Integer.parseInt(userId)).getSingleResult();
 
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("testar.pdf"));
             document.open();
-            String s ="COMBOBOX#";
-
-            UTest test = ts.getUserTest(214);
             document.addTitle("PDF TEST");
             myContentStyle.setStyle("underline");
             document.add(new Paragraph("Title: " + test.getTestAnswered().getTitle(), myContentStyle));
