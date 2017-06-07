@@ -26,7 +26,8 @@ public class Main {
         Server server = new Server(4436);
         server.start();
 
-        //persistTestData();
+
+//        persistTestData();
     }
 
     /**

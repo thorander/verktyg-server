@@ -263,6 +263,10 @@ public class Connection extends Thread{
                     out.println("ERROR#No such test. This shouldn't happen.");
                 }
                 break;
+            case "PDF":
+                PdfService pdf = new PdfService();
+                pdf.createPdf();
+                break;
             case "ADDTAKENTEST":
                 test = ts.getTestFromId(Integer.parseInt(split[1]));
                 uTest = new UTest(test, Integer.parseInt(split[2]));

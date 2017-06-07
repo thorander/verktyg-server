@@ -17,10 +17,16 @@ import java.util.List;
 @Entity
 @NamedQueries({
         @NamedQuery(name = "UTest.selectAll",
-                query = "SELECT t FROM UTest t"),
+                query = "SELECT t FROM UTest t "),
         @NamedQuery(name = "UTest.findByGroupAndTest",
                 query = "SELECT t FROM UTest t JOIN User u JOIN UserGroup ug WHERE t MEMBER OF u.takenTests AND u MEMBER OF ug.users" +
-                        " AND t.testAnswered.testId = :testId AND ug.groupId = :groupId")
+                        " AND t.testAnswered.testId = :testId AND ug.groupId = :groupId"),
+        @NamedQuery(name = "UTest.getSelected",
+
+                query = "SELECT ut FROM UTest ut JOIN User u JOIN Test t WHERE t.title = :title AND u.uid = :userId"
+        ),
+        @NamedQuery(name = "UTest.getAll",
+                query = "SELECT t FROM UTest t WHERE t.UTestId= :id")
 })
 public class UTest {
 
