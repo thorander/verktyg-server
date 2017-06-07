@@ -428,13 +428,15 @@ public class Connection extends Thread{
                 }
                 break;
             case "CORRECT":
-                    for(int x = 1; x < split.length; x++){
-                        uts.correctComment(split[x]);
-                        if(split[x].equals("1")) {
-                            uts.correctScore(Integer.parseInt(split[x]));
-                        }
+                for(int x = 2; x < split.length;){
+                    if(split[x].equals("UPDATEQUESTION")){
+                        x++;
+                        uts.updateQuestion(split[x++], split[x++], split[x++]);
                     }
-                uts.updateCorrect();
+                }
+                uts.updateQuestions();
+                uts.updateUTest(split[1]);
+                uts.persistTest();
                 break;
             case "UTESTSFORRESULTPAGE":
                 System.out.println("UTESTFORRESULTPAGE");

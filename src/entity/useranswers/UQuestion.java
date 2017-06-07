@@ -1,6 +1,7 @@
 package entity.useranswers;
 
 import entity.Answer;
+import entity.Comment;
 import entity.Question;
 
 import javax.persistence.*;
@@ -22,6 +23,9 @@ public class UQuestion {
     private Question question;
     @OneToMany(targetEntity = UAnswer.class, cascade = CascadeType.PERSIST)
     private List userAnswers;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private Comment comment;
 
     private int score;
 
@@ -66,6 +70,14 @@ public class UQuestion {
 
     public int getScore(){
         return score;
+    }
+
+    public void setComment(Comment c){
+        comment = c;
+    }
+
+    public Comment getComment(){
+        return comment;
     }
 
 

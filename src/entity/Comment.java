@@ -15,15 +15,11 @@ public class Comment {
 
     private String comment;
 
-    @OneToOne
-    private UQuestion userQuestion;
-
     public Comment() {
 
     }
 
-    public Comment(UQuestion userQuestion, String comment) {
-        this.userQuestion = userQuestion;
+    public Comment(String comment) {
         this.comment = comment;
     }
 
@@ -39,15 +35,8 @@ public class Comment {
         return commentId;
     }
 
-    public UQuestion getUserQuestion() {
-        return userQuestion;
-    }
-
     public void setCommentId(long commentId) {
         this.commentId = commentId;
     }
 
-    public void setUserQuestion(UQuestion userQuestion) {
-        this.userQuestion = userQuestion;
-    }
 }

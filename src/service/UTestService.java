@@ -1,6 +1,7 @@
 package service;
 
 import core.Main;
+import entity.Comment;
 import entity.Question;
 import entity.Test;
 import entity.User;
@@ -24,14 +25,12 @@ public class UTestService {
     private String testname;
     private String id;
 
-    private List<String> commentList;
-    private List<Integer> scoreList;
-    String correctComment;
-    private int testId;
+    private ArrayList<UQuestion> updateQuestions;
 
     public UTestService(){
         emf = Persistence.createEntityManagerFactory("JPAVerktyg");
         em = emf.createEntityManager();
+        updateQuestions = new ArrayList<>();
     }
 
     public void setTest(UTest t){
@@ -99,6 +98,25 @@ public class UTestService {
         test.setShowResults(true);
         test.setScore(points);
         test.setComment("This test was automatically corrected.");
+        setGrade();
+    }
+
+    public void updateUTest(String uTestId){
+        TypedQuery<UTest> uQuery = em.createQuery("SELECT u FROM UTest u WHERE u.UTestId = :uTestId", UTest.class);
+        test = uQuery.setParameter("uTestId", Integer.parseInt(uTestId)).getSingleResult();
+        int points = 0;
+        for(Object q : test.getQuestions()){
+            UQuestion question = ((UQuestion)q);
+            points += question.getScore();
+        }
+        test.setScore(points);
+        test.setCorrected(true);
+        test.setShowResults(true);
+        setGrade();
+    }
+
+    private void setGrade(){
+        int points = test.getScore();
         double percentage = ((double)points) / ((double)test.getTestAnswered().getMaxPoints());
         if(percentage > 0.9){
             test.setGrade("VG");
@@ -119,7 +137,6 @@ public class UTestService {
     }
 
     public String getTestList() {
-
         String s = "GETTESTLIST";
         TypedQuery<Test> query =
                 em.createQuery("SELECT c FROM Test c", Test.class);
@@ -143,6 +160,7 @@ public class UTestService {
             for(User u : userResults){
                 temp += "#" + u.getFirstName() + " " + u.getLastName() + "#" + u.getUid();
             }
+            System.out.println("Kom vi hit?");
         } catch (NoResultException e){
 
         }
@@ -231,66 +249,29 @@ public class UTestService {
         return s;
     }
 
-    public void updateCorrect() {
-
-        StringBuilder builder = new StringBuilder();
-        for (String value : commentList) {
-            builder.append(value);
-        }
-        correctComment = builder.toString();
-        System.out.println("result: "+correctComment);
-
-        int correctScore = 0;
-        for(int i : scoreList) {
-            correctScore += i;
-        }
-        System.out.println("sum: "+correctScore);
-
-        String s = "";
-        TypedQuery<UTest> query =
-                em.createQuery("SELECT c FROM UTest c JOIN User u WHERE c MEMBER OF u.takenTests AND u.uid = :uid AND c.testAnswered.title = :testName", UTest.class);
-                //em.createQuery("SELECT c FROM UTest c JOIN User c WHERE c MEMBER OF u.takenTests AND u.testAnswered.testId = :testId AND u.uid = :uid", UTest.class);
+    public void updateQuestion(String qId, String newPoints, String comment){
+        TypedQuery<UQuestion> questionQuery = em.createQuery("SELECT q FROM UQuestion q WHERE q.UQuestionId = :qId", UQuestion.class);
         try{
-            test = query.setParameter("testName", testname).setParameter("uid", Integer.parseInt(id)).getSingleResult();
-
+            UQuestion updateQuestion = questionQuery.setParameter("qId", Integer.parseInt(qId)).getSingleResult();
+            updateQuestion.setScore(Integer.parseInt(newPoints));
+            if(!comment.equals("nocomment")){
+                System.out.println("We gave it a comment, yay!");
+                updateQuestion.setComment(new Comment(comment));
+            }
+            updateQuestions.add(updateQuestion);
         } catch (NoResultException e){
             System.out.println(e);
         }
 
-        s += test.getUTestId();
-        testId = Integer.parseInt(s);
-        System.out.println(testId);
-        //System.out.println("namn: "+ testname + " id: " +id);
-
-        EntityTransaction updateTransaction = em.getTransaction();
-        updateTransaction.begin();
-        Query q = em.createQuery("UPDATE UTest u SET u.comment = :comment WHERE u.UTestId = :uid");
-        q.setParameter("comment", "Hej");
-        q.setParameter("uid", testId);
-
-        int updated = q.executeUpdate();
-            if (updated > 0) {
-                System.out.println("Done...");
-            }
-            updateTransaction.commit();
     }
 
-
-    public String correctComment(String i) {
-        commentList = new ArrayList<>();
-        commentList.add(i);
-        //System.out.println("comment: "+commentList);
-
-        return "nothing";
-    }
-
-
-    public int correctScore(Integer x) {
-        scoreList = new ArrayList<>();
-        scoreList.add(x);
-        //System.out.println("score: "+scoreList);
-
-        return 0;
+    public void updateQuestions(){
+        em.getTransaction().begin();
+        for(UQuestion u : updateQuestions){
+            em.persist(u);
+        }
+        em.getTransaction().commit();
+        updateQuestions.clear();
     }
 
 }
