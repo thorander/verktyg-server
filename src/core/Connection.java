@@ -264,6 +264,10 @@ public class Connection extends Thread{
                     out.println("ERROR#No such test. This shouldn't happen.");
                 }
                 break;
+            case "PDF":
+                PdfService pdf = new PdfService();
+                pdf.createPdf(split[1], split[2]);
+                break;
             case "ADDTAKENTEST":
                 test = ts.getTestFromId(Integer.parseInt(split[1]));
                 uTest = new UTest(test, Integer.parseInt(split[2]));
@@ -303,6 +307,16 @@ public class Connection extends Thread{
                 out.println(uts.getUTest());
                 break;
             case "GETTEST":
+                TypedQuery<Test> testQuery = ts.getEm().createQuery("SELECT c FROM Test c", Test.class);
+                String result = "GETUTEST#";
+                try{
+                    for(Test t : testQuery.getResultList()){
+                        result += t.getTitle() + "@" + t.getTestId() + "@";
+                    }
+                    out.println(result);
+                } catch (NoResultException e){
+                    System.out.println(e);
+                }
                 break;
             case "GETTESTLIST":
                 out.println(uts.getTestList());
@@ -421,6 +435,14 @@ public class Connection extends Thread{
                         }
                     }
                 uts.updateCorrect();
+                break;
+            case "UTESTSFORRESULTPAGE":
+                System.out.println("UTESTFORRESULTPAGE");
+                out.println(uts.getUTestsForResultPage(loggedInUser));
+                break;
+            case "UTESTFORRESULTPAGE":
+                System.out.println("Looking for the test");
+                out.println(uts.getUTest(split[1]));
                 break;
         }
     }

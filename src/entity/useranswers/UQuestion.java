@@ -32,6 +32,8 @@ public class UQuestion {
     public UQuestion(Question question) {
         this.question = question;
         this.userAnswers = new ArrayList<UAnswer>();
+
+
     }
 
     public Question getQuestion() {
