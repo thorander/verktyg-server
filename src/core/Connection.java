@@ -429,6 +429,14 @@ public class Connection extends Thread{
                     }
                 }
                 break;
+            case "UTESTSFORRESULTPAGE":
+                System.out.println("UTESTFORRESULTPAGE");
+                out.println(uts.getUTestsForResultPage(loggedInUser));
+                break;
+            case "UTESTFORRESULTPAGE":
+                System.out.println("Looking for the test");
+                out.println(uts.getUTest(split[1]));
+                break;
         }
     }
 

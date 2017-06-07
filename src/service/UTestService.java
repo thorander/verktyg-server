@@ -162,6 +162,47 @@ public class UTestService {
         return i;
     }
 
+    public String getUTestsForResultPage(User u){
+        String result = "UTESTSFORRESULTPAGE#";
+        TypedQuery<UTest> query = em.createQuery("SELECT c FROM UTest c JOIN User u WHERE c MEMBER OF u.takenTests AND u = :u", UTest.class);
+        try{
+            ArrayList<UTest> tests = new ArrayList<>(query.setParameter("u", u).getResultList());
+            for(UTest ut : tests){
+                result += ut.getTestAnswered().getTitle() + "#" + ut.getUTestId() + "#";
+            }
+        } catch (NoResultException e){
+            System.out.println(e);
+        }
+        return result;
+    }
+
+    public String getUTest(String id){
+        String result = "UTESTFORRESULTPAGE#";
+
+        TypedQuery<UTest> query = em.createQuery("SELECT c FROM UTest c WHERE c.UTestId = :id", UTest.class);
+        try{
+            test = query.setParameter("id", Integer.parseInt(id)).getSingleResult();
+            result += test.getTestAnswered().getTitle() + "#"
+                    + test.getScore() + "#"
+                    + test.getTestAnswered().getMaxPoints() + "#"
+                    + test.getGrade() + "#"
+                    + test.getComment();
+            for (Object temp : test.getQuestions()) {
+                UQuestion question = (UQuestion) temp;
+                result += "#UQUESTION";
+                result += "#" + question.getQuestion().getQuestion() + "#" + question.getScore() + "#" + question.getQuestion().getScore();
+                for (Object answerTemp : question.getUserAnswers()) {
+                    UAnswer answer = (UAnswer) answerTemp;
+                    result += "#ANSWER" + "#" + question.getQuestion().getQuestionType() + "#" + answer.getAnswerText() + "#" + answer.getAnswer().isCorrect() + "#" + answer.isChecked() + "#" + answer.getAnswerOrder();
+                }
+            }
+        } catch (NoResultException e){
+            System.out.println(e);
+        }
+
+        return result;
+    }
+
     public String getUTest() {
 
         String s = "UTEST#";
