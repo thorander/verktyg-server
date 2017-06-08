@@ -184,7 +184,7 @@ public class UTestService {
 
     public String getUTestsForResultPage(User u){
         String result = "UTESTSFORRESULTPAGE#";
-        TypedQuery<UTest> query = em.createQuery("SELECT c FROM UTest c JOIN User u WHERE c MEMBER OF u.takenTests AND u = :u", UTest.class);
+        TypedQuery<UTest> query = em.createQuery("SELECT c FROM UTest c JOIN User u WHERE c MEMBER OF u.takenTests AND u = :u AND c.corrected = true", UTest.class);
         try{
             ArrayList<UTest> tests = new ArrayList<>(query.setParameter("u", u).getResultList());
             for(UTest ut : tests){
@@ -206,11 +206,12 @@ public class UTestService {
                     + test.getScore() + "#"
                     + test.getTestAnswered().getMaxPoints() + "#"
                     + test.getGrade() + "#"
-                    + test.getComment();
+                    + test.getComment() + "#"
+                    + test.getTimeSpent();
             for (Object temp : test.getQuestions()) {
                 UQuestion question = (UQuestion) temp;
                 result += "#UQUESTION";
-                result += "#" + question.getQuestion().getQuestion() + "#" + question.getScore() + "#" + question.getQuestion().getScore();
+                result += "#" + question.getQuestion().getQuestion() + "#" + question.getScore() + "#" + question.getQuestion().getScore() + "#" + question.getCommentText();
                 for (Object answerTemp : question.getUserAnswers()) {
                     UAnswer answer = (UAnswer) answerTemp;
                     result += "#ANSWER" + "#" + question.getQuestion().getQuestionType() + "#" + answer.getAnswerText() + "#" + answer.getAnswer().isCorrect() + "#" + answer.isChecked() + "#" + answer.getAnswerOrder();

@@ -62,6 +62,10 @@ public class PdfService {
                 UQuestion tempQuestion = ((UQuestion) test.getQuestions().get(i));
                 Paragraph p = new Paragraph(("Question: " + tempQuestion.getQuestion().getQuestion()));
                 document.add( p );
+                if(!tempQuestion.getCommentText().equals(" ")){
+                    p = new Paragraph("Comment: " + tempQuestion.getCommentText());
+                    document.add(p);
+                }
 
 
                 for (int j = 0; j < tempQuestion.getUserAnswers().size(); j++) {

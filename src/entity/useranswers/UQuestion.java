@@ -80,5 +80,12 @@ public class UQuestion {
         return comment;
     }
 
+    public String getCommentText(){
+        if(comment == null){
+            return " ";
+        }
+        return comment.getComment();
+    }
+
 
 }
