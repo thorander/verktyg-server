@@ -70,15 +70,13 @@ public class PdfService {
 
                     if (tempAnswer.getAnswer().isCorrect()) {
                         document.add(new Paragraph("Answers: " + tempAnswer.getAnswerText(), green));
-                        document.add(new Paragraph("Your answer: " + tempAnswer.isChecked()));
                     } else {
                         document.add(new Paragraph("Answers: " + tempAnswer.getAnswerText(), red));
-                        document.add(new Paragraph("Your answer: " + tempAnswer.isChecked()));
                     }
                 }
 
                 if(!tempQuestion.getCommentText().equals(" ")){
-                    p = new Paragraph("\nComment: " + tempQuestion.getCommentText());
+                    p = new Paragraph("\nTeacher's comment: " + tempQuestion.getCommentText());
                     p.setSpacingAfter(20f);
                     document.add(p);
                 }
