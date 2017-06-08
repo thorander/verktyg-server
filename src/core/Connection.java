@@ -428,7 +428,9 @@ public class Connection extends Thread{
                 }
                 break;
             case "CORRECT":
-                for(int x = 2; x < split.length;){
+                System.out.println(input);
+                uts.updateTestComment(Integer.parseInt(split[1]), split[2]);
+                for(int x = 3; x < split.length;){
                     if(split[x].equals("UPDATEQUESTION")){
                         x++;
                         uts.updateQuestion(split[x++], split[x++], split[x++]);

@@ -26,6 +26,8 @@ public class UTestService {
     private String id;
 
     private ArrayList<UQuestion> updateQuestions;
+    private int testId;
+    private String testComment;
 
     public UTestService(){
         emf = Persistence.createEntityManagerFactory("JPAVerktyg");
@@ -224,6 +226,7 @@ public class UTestService {
     public String getUTest() {
 
         String s = "UTEST#";
+
         TypedQuery<UTest> query =
                 em.createQuery("SELECT c FROM UTest c JOIN User u WHERE c MEMBER OF u.takenTests AND u.uid = :uid AND c.testAnswered.title = :testName", UTest.class);
         try{
@@ -235,7 +238,6 @@ public class UTestService {
         }
 
         s += test.getUTestId() + "#" + test.getTestAnswered().getTitle();
-
 
         for (Object temp : test.getQuestions()) {
             UQuestion question = (UQuestion) temp;
@@ -251,6 +253,7 @@ public class UTestService {
 
     public void updateQuestion(String qId, String newPoints, String comment){
         TypedQuery<UQuestion> questionQuery = em.createQuery("SELECT q FROM UQuestion q WHERE q.UQuestionId = :qId", UQuestion.class);
+
         try{
             UQuestion updateQuestion = questionQuery.setParameter("qId", Integer.parseInt(qId)).getSingleResult();
             updateQuestion.setScore(Integer.parseInt(newPoints));
@@ -263,6 +266,8 @@ public class UTestService {
             System.out.println(e);
         }
 
+
+
     }
 
     public void updateQuestions(){
@@ -272,6 +277,21 @@ public class UTestService {
         }
         em.getTransaction().commit();
         updateQuestions.clear();
+    }
+
+    public void updateTestComment(int i, String s){
+        testId = i;
+        testComment = s;
+        EntityTransaction updateTransaction = em.getTransaction();
+        updateTransaction.begin();
+        Query q = em.createQuery("UPDATE UTest u SET u.comment = :comment WHERE u.UTestId = :uid");
+        q.setParameter("comment", testComment);
+        q.setParameter("uid", testId);
+        int updated = q.executeUpdate();
+        if (updated > 0) {
+            System.out.println("Done...");
+        }
+        updateTransaction.commit();
     }
 
 }
