@@ -55,7 +55,7 @@ public class PdfService {
             document.addTitle("PDF TEST");
             myContentStyle.setStyle("underline");
             document.add(new Paragraph("Title: " + test.getTestAnswered().getTitle(), myContentStyle));
-            Paragraph result = new Paragraph("Your result is...!");
+            Paragraph result = new Paragraph("Your result is: "+test.getScore()+"\nMaxpoints: "+test.getTestAnswered().getMaxPoints()+"\nGrade: "+test.getGrade());
             result.setSpacingAfter(20f);
             document.add(result);
             for (int i = 0; i < test.getQuestions().size(); i++) {
@@ -69,9 +69,9 @@ public class PdfService {
                     UAnswer tempAnswer = ((UAnswer) tempQuestion.getUserAnswers().get(j));
 
                     if (tempAnswer.getAnswer().isCorrect()) {
-                        document.add(new Paragraph("Answers: " + tempAnswer.getAnswer().getAnswer(), green));
+                        document.add(new Paragraph("Answers: " + tempAnswer.getAnswerText(), green));
                     } else {
-                        document.add(new Paragraph("Answers: " + tempAnswer.getAnswer().getAnswer(), red));
+                        document.add(new Paragraph("Answers: " + tempAnswer.getAnswerText(), red));
 
                     }
                 }
