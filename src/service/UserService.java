@@ -7,7 +7,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 /**
- * Created by Markus on 2017-05-09.
+ * A service class for User
  */
 public class UserService {
     EntityManagerFactory emf;

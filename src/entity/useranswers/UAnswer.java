@@ -4,6 +4,9 @@ import entity.Answer;
 
 import javax.persistence.*;
 
+/**
+ * A user answer. Keeps a reference to the corresponding answer.
+ */
 @Entity
 public class UAnswer {
 
@@ -60,4 +63,6 @@ public class UAnswer {
     public boolean isChecked(){
         return checked;
     }
+
+    public String getAnswerText(){ return answerText;}
 }

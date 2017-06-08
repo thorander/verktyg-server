@@ -7,17 +7,27 @@ import org.eclipse.persistence.indirection.IndirectList;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-//
+
+/**
+ * User Test
+ * A user answered test. Keeps information such as if it has been graded, how many points it got
+ * what grade it got, keeps a reference to the test it answers.
+ */
 
 @Entity
 @NamedQueries({
         @NamedQuery(name = "UTest.selectAll",
-                query = "SELECT t FROM UTest t"),
+                query = "SELECT t FROM UTest t "),
         @NamedQuery(name = "UTest.findByGroupAndTest",
                 query = "SELECT t FROM UTest t JOIN User u JOIN UserGroup ug WHERE t MEMBER OF u.takenTests AND u MEMBER OF ug.users" +
-                        " AND t.testAnswered.testId = :testId AND ug.groupId = :groupId")
-})
+                        " AND t.testAnswered.testId = :testId AND ug.groupId = :groupId"),
+        @NamedQuery(name = "UTest.getSelected",
 
+                query = "SELECT ut FROM UTest ut JOIN User u JOIN Test t WHERE t.title = :title AND u.uid = :userId"
+        ),
+        @NamedQuery(name = "UTest.getAll",
+                query = "SELECT t FROM UTest t WHERE t.UTestId= :id")
+})
 public class UTest {
 
     @Id
@@ -105,6 +115,11 @@ public class UTest {
     }
 
     public int getUTestId(){return UTestId;}
+
+    public int setUTestId(int i) {
+        this.UTestId = i;
+        return UTestId;
+    }
 
     public String getComment(){return comment;}
 

@@ -3,6 +3,7 @@ package service;
 import entity.Question;
 import entity.Test;
 import entity.User;
+import entity.useranswers.UTest;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -10,7 +11,7 @@ import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
 /**
- * Created by Matilda on 2017-05-10.
+ * A service class for Test
  */
 public class TestService {
 
@@ -18,6 +19,7 @@ public class TestService {
     EntityManager em;
 
     private Test test;
+    private UTest userTest;
 
     public TestService(){
         emf = Persistence.createEntityManagerFactory("JPAVerktyg");
@@ -51,9 +53,24 @@ public class TestService {
         return em;
     }
 
+    public UTest getUserTest( int id){
+
+        TypedQuery<UTest> userTestById = em.createNamedQuery("UTest.getAll", UTest.class);
+        UTest getUserTest =  userTestById.setParameter("id", id).getSingleResult();
+        return getUserTest;
+    }
+
     public Test getTestFromId(int id){
         TypedQuery<Test> testById = em.createNamedQuery("Test.findById", Test.class);
         Test testFromId = testById.setParameter("testId", id).getSingleResult();
         return testFromId;
     }
+
+    public UTest getTestUser( String title, int id){
+
+        TypedQuery<UTest> userTestById = em.createNamedQuery("UTest.getSelected", UTest.class);
+        UTest getUserTest =  userTestById.setParameter("userId", id).setParameter("title", title).getSingleResult();
+        return getUserTest;
+    }
+
 }

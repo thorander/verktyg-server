@@ -1,13 +1,18 @@
 package entity.useranswers;
 
 import entity.Answer;
+import entity.Comment;
 import entity.Question;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * User question.
+ * Keeps information about the answered question such as a reference to the actual question
+ * and also how much score it got, and also keeps a list of user answers.
+ */
 @Entity
 public class UQuestion {
 
@@ -19,6 +24,9 @@ public class UQuestion {
     @OneToMany(targetEntity = UAnswer.class, cascade = CascadeType.PERSIST)
     private List userAnswers;
 
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private Comment comment;
+
     private int score;
 
     public UQuestion() {
@@ -28,6 +36,8 @@ public class UQuestion {
     public UQuestion(Question question) {
         this.question = question;
         this.userAnswers = new ArrayList<UAnswer>();
+
+
     }
 
     public Question getQuestion() {
@@ -60,6 +70,14 @@ public class UQuestion {
 
     public int getScore(){
         return score;
+    }
+
+    public void setComment(Comment c){
+        comment = c;
+    }
+
+    public Comment getComment(){
+        return comment;
     }
 
 

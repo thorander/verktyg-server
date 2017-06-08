@@ -1,4 +1,4 @@
-package entity.useranswers;
+package entity;
 
 import core.Connection;
 import core.Main;
@@ -13,7 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by phili on 2017-05-11.
+ * UserGroup
+ * Keeps a list of Users which are part of this group.
  */
 
 @Entity

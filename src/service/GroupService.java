@@ -1,17 +1,13 @@
 package service;
 
-import core.Connection;
-import entity.Test;
 import entity.User;
-import entity.useranswers.UserGroup;
+import entity.UserGroup;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
- * Created by phili on 2017-05-18.
+ * A service class for a UserGroup.
  */
 
 

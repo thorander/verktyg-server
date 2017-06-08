@@ -7,6 +7,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+/**
+ * Server class - listens for incoming connections, creates connection classes and manages them
+ */
 public class Server extends Thread {
 
     private static ArrayList<Connection> connections = new ArrayList<>();

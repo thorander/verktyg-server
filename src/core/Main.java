@@ -12,27 +12,27 @@ import service.Mail;
 
 import javax.persistence.*;
 
-public class Main extends Application {
+/**
+ * Main class - start here.
+ */
+public class Main {
 
     public static boolean DEBUG = true;
 
-    @Override
-    public void start(Stage primaryStage) throws Exception{
-        Server server = new Server(4436);
-        server.start();
-
-    }
-
     public static void main(String[] args) {
-/*        launch(args);*/
         Mail.setup();
 
+        //Create a server which listens for incoming connections and start it
         Server server = new Server(4436);
         server.start();
 
-        //persistTestData();
+
+//        persistTestData();
     }
 
+    /**
+     * Populate the database with test data
+     */
     private static void persistTestData(){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("JPAVerktyg");
         EntityManager em = emf.createEntityManager();

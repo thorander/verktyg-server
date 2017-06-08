@@ -5,6 +5,9 @@ import javax.mail.*;
 import javax.mail.internet.*;
 import javax.activation.*;
 
+/**
+ * Mail - takes care of all mailing to users.
+ */
 public class Mail {
 
     private static Properties props = new Properties();
@@ -30,7 +33,7 @@ public class Mail {
     }
 
     public static void sendWelcomeEmail(String mail, String name){
-        try {
+/*        try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress("markus3832@gmail.com"));
             message.setRecipients(Message.RecipientType.TO,
@@ -45,11 +48,11 @@ public class Mail {
 
         } catch (MessagingException e) {
             throw new RuntimeException(e);
-        }
+        }*/
     }
 
     public static void sendNewTestMail(String mail, String name){
-        try {
+/*        try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress("markus3832@gmail.com"));
             message.setRecipients(Message.RecipientType.TO,
@@ -63,7 +66,7 @@ public class Mail {
             System.out.println("Message sent");
 
         } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        }
+            System.out.println(e);
+        }*/
     }
 }
