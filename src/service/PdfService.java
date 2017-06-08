@@ -55,7 +55,7 @@ public class PdfService {
             document.addTitle("PDF TEST");
             myContentStyle.setStyle("underline");
             document.add(new Paragraph("Title: " + test.getTestAnswered().getTitle(), myContentStyle));
-            Paragraph result = new Paragraph("Your result is: "+test.getScore()+"/"+test.getTestAnswered().getMaxPoints()+"\nGrade: "+test.getGrade()+"\nTime: "+test.getTimeSpent()+"\nComment: "+test.getComment());
+            Paragraph result = new Paragraph("Your result is: "+test.getScore()+"/"+test.getTestAnswered().getMaxPoints()+"\nGrade: "+test.getGrade()+"\nTime: " + test.getTimeSpent()/60 + ":" + test.getTimeSpent()%60+"\nComment: "+test.getComment());
             result.setSpacingAfter(20f);
             document.add(result);
             for (int i = 0; i < test.getQuestions().size(); i++) {
@@ -70,14 +70,15 @@ public class PdfService {
 
                     if (tempAnswer.getAnswer().isCorrect()) {
                         document.add(new Paragraph("Answers: " + tempAnswer.getAnswerText(), green));
+                        document.add(new Paragraph("Your answer: " + tempAnswer.isChecked()));
                     } else {
                         document.add(new Paragraph("Answers: " + tempAnswer.getAnswerText(), red));
-
+                        document.add(new Paragraph("Your answer: " + tempAnswer.isChecked()));
                     }
-
                 }
+
                 if(!tempQuestion.getCommentText().equals(" ")){
-                    p = new Paragraph("Comment: " + tempQuestion.getCommentText());
+                    p = new Paragraph("\nComment: " + tempQuestion.getCommentText());
                     p.setSpacingAfter(20f);
                     document.add(p);
                 }
